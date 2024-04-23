@@ -1,0 +1,28 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  // output          = "../node_modules/.prisma/client"
+  output          = "../../../../../node_modules/.prisma/client"
+  previewFeatures = ["fullTextSearch", "driverAdapters"]
+  binaryTargets   = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Produto {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  nome      String
+  categoria String
+  preco     Int
+  descricao String
+  imagens   String[]
+}
+
+model Pedido {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}

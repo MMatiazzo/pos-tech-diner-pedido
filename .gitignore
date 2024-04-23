@@ -1,6 +1,13 @@
 # compiled output
 /dist
 /node_modules
+/data
+
+# ENV
+.env
+*-lock.json
+
+*node_modules*
 
 # Logs
 logs

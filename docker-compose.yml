@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  api:
+    # depends_on:
+    #   - mongo
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - 3333:3333
+    environment:
+      - DATABASE_URL=mongodb://mongocontainer:27020/pos-tech-db?replicaSet=myReplicaSetName
+    links:
+      - mongocontainer:mongocontainer
+
+  # mongo:
+  #   image: prismagraphql/mongo-single-replica:5.0.3
+  #   container_name: mongo
+  #   environment:
+  #     - MONGO_INITDB_ROOT_USERNAME="user"
+  #     - MONGO_INITDB_ROOT_PASSWORD="pass"
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - ./data/mongo:/data/db

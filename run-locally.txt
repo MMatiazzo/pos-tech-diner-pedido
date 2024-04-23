@@ -1,0 +1,10 @@
+docker network create mongoCluster
+
+docker run -d -p 27020:27020 --name mongocontainer --network mongoCluster mongo:latest mongod --replSet myReplicaSetName --bind_ip localhost,mongocontainer
+
+docker exec -it mongocontainer mongosh --eval "rs.initiate({
+ _id: \"myReplicaSetName\",
+ members: [
+   {_id: 0, host: \"mongocontainer\"}
+ ]
+})"
