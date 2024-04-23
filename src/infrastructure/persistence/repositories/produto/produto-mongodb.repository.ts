@@ -10,14 +10,14 @@ export class ProdutoMongoDbRepository implements IProdutoRepository {
     private prisma: PrismaService
   ) { }
 
-  async cadastrar(produto: Produto): Promise<any> {
+  async cadastrar(produto: Produto): Promise<Produto> {
     console.log('-=-= PRODUTO REPOSITORY -=-=');
     console.log('produto inside the cadastrar function => ', produto);
     const novoProduto = await this.prisma.produto.create({
       data: produto
     });
     console.log('novo produto => ', novoProduto)
-    return { id: null };
+    return novoProduto;
   }
 
   editar(id: string, campo: string, valor: string | number | string[]): Promise<Produto> {

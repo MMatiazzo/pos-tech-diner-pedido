@@ -10,9 +10,6 @@ export class ProdutoGateway implements IProdutoGateway {
   ) { }
 
   async cadastrarProduto(produto: Produto): Promise<Produto> {
-    // cadastrar e retornar produto;
-    console.log('-=-=- PRODUTO GATEWAY -=-=-');
-    console.log('produto => ', produto);
     const { id } = await this.produtoRepository.cadastrar(produto);
     return {
       ...produto,

@@ -2,7 +2,7 @@
 /dist
 /node_modules
 /data
-
+/coverage
 # ENV
 .env
 *-lock.json
