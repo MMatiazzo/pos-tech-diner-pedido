@@ -12,7 +12,6 @@ export class CadastrarProdutoUseCase {
   ) { }
 
   async execute(payload: ProdutoDto): Promise<Produto> {
-    console.log('-=-=- PRODUTO USECASE -=-=-');
     const produto = Produto.new(payload);
     if (produto.nome === "" || produto.preco <= 0 || produto.categoria === "") {
       throw new BadRequestException("Produto não contém todas os atributos necessários");

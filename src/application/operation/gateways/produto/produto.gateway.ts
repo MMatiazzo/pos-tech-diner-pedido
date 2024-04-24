@@ -3,6 +3,7 @@ import { Produto } from "src/core/produto/entity/produto.entity";
 import { IProdutoRepository } from "src/infrastructure/persistence/repositories/produto/Iproduto.repository";
 import { IProdutoGateway } from "./Iproduto.gateway";
 import { ListarProdutoDto } from "src/core/produto/dto/listar-produto.dto";
+import { EditarProdutoDto } from "src/core/produto/dto/editar-produto.dto";
 
 export class ProdutoGateway implements IProdutoGateway {
   constructor(
@@ -39,5 +40,15 @@ export class ProdutoGateway implements IProdutoGateway {
 
     const produtos = await this.produtoRepository.listar(arrayMatch);
     return produtos;
+  }
+
+  async editarProduto(editarProdutoDto: EditarProdutoDto): Promise<void> {
+    const { id, campo, valor } = editarProdutoDto;
+    await this.produtoRepository.editar(id, campo, valor);
+  }
+
+  async deletarProduto(id: string): Promise<Produto | null> {
+    const produtoDeleted = await this.produtoRepository.remover(id);
+    return produtoDeleted;
   }
 }

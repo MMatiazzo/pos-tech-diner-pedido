@@ -1,7 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { IProdutoRepository } from './Iproduto.repository';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Produto } from 'src/core/produto/entity/produto.entity';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class ProdutoMongoDbRepository implements IProdutoRepository {
@@ -11,18 +12,46 @@ export class ProdutoMongoDbRepository implements IProdutoRepository {
   ) { }
 
   async cadastrar(produto: Produto): Promise<Produto> {
-    const novoProduto = await this.prisma.produto.create({
-      data: produto
+    try {
+      const novoProduto = await this.prisma.produto.create({
+        data: produto
+      });
+
+      return novoProduto;
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientValidationError) {
+        throw new BadRequestException('Produto inválido');
+      }
+      throw error;
+    }
+
+  }
+
+  async editar(id: string, campo: string, valor: string | number | string[]): Promise<Produto> {
+    const updateData = { [campo]: valor };
+    return this.prisma.produto.update({
+      where: {
+        id,
+      },
+      data: updateData
     });
-    return novoProduto;
   }
 
-  editar(id: string, campo: string, valor: string | number | string[]): Promise<Produto> {
-    throw new Error('Method not implemented.');
-  }
+  async remover(id: string): Promise<Produto | null> {
+    try {
+      const produto = await this.prisma.produto.delete({
+        where: {
+          id,
+        },
+      });
 
-  remover(id: string): Promise<Produto> {
-    throw new Error('Method not implemented.');
+      return produto;
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+        throw new NotFoundException('Produto não encontrado');
+      }
+      throw error;
+    }
   }
 
   async listar(mathArray: any[]): Promise<any> {
