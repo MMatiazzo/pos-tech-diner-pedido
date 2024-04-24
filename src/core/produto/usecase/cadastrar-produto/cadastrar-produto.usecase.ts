@@ -1,8 +1,8 @@
 import { BadRequestException, Inject, Injectable } from "@nestjs/common";
 
-import { IProdutoGateway } from "../../../application/operation/gateways/produto/Iproduto.gateway";
-import { ProdutoDto } from "../dto/cria-produto.dto";
-import { Produto } from "../entity/produto.entity";
+import { IProdutoGateway } from "../../../../application/operation/gateways/produto/Iproduto.gateway";
+import { ProdutoDto } from "../../dto/cria-produto.dto";
+import { Produto } from "../../entity/produto.entity";
 
 @Injectable()
 export class CadastrarProdutoUseCase {

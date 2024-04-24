@@ -1,8 +1,8 @@
 import { BadRequestException } from '@nestjs/common';
-import { IProdutoGateway } from '../../../application/operation/gateways/produto/Iproduto.gateway';
-import { ProdutoDto } from '../dto/cria-produto.dto';
-import { Produto } from '../entity/produto.entity';
-import { CadastrarProdutoUseCase } from './cadastrar-produto.use-case';
+import { IProdutoGateway } from '../../../../application/operation/gateways/produto/Iproduto.gateway';
+import { ProdutoDto } from '../../dto/cria-produto.dto';
+import { Produto } from '../../entity/produto.entity';
+import { CadastrarProdutoUseCase } from './cadastrar-produto.usecase';
 
 const ID_UUID = "0";
 const produtoDto: ProdutoDto = {

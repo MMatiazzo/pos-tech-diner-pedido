@@ -11,12 +11,9 @@ export class ProdutoMongoDbRepository implements IProdutoRepository {
   ) { }
 
   async cadastrar(produto: Produto): Promise<Produto> {
-    console.log('-=-= PRODUTO REPOSITORY -=-=');
-    console.log('produto inside the cadastrar function => ', produto);
     const novoProduto = await this.prisma.produto.create({
       data: produto
     });
-    console.log('novo produto => ', novoProduto)
     return novoProduto;
   }
 
@@ -26,7 +23,11 @@ export class ProdutoMongoDbRepository implements IProdutoRepository {
   remover(id: string): Promise<Produto> {
     throw new Error('Method not implemented.');
   }
-  buscarPorCategoria(categoria: string): Promise<Produto[]> {
-    throw new Error('Method not implemented.');
+  async listar(test: any): Promise<any> {
+    return this.prisma.produto.aggregateRaw({
+      pipeline: [
+        ...test
+      ]
+    });
   }
 } 

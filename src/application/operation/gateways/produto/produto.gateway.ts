@@ -2,6 +2,7 @@ import { Inject } from "@nestjs/common";
 import { Produto } from "src/core/produto/entity/produto.entity";
 import { IProdutoRepository } from "src/infrastructure/persistence/repositories/produto/Iproduto.repository";
 import { IProdutoGateway } from "./Iproduto.gateway";
+import { ListarProdutoDto } from "src/core/produto/dto/listar-produto.dto";
 
 export class ProdutoGateway implements IProdutoGateway {
   constructor(
@@ -15,5 +16,28 @@ export class ProdutoGateway implements IProdutoGateway {
       ...produto,
       id,
     };
+  }
+
+  async listarProduto(payload: ListarProdutoDto): Promise<Produto[]> {
+    const arrayMatch = [];
+
+    const { categoria, nome } = payload;
+
+    if (categoria) {
+      const categoriaMatch = {
+        "$match": { categoria }
+      }
+      arrayMatch.push(categoriaMatch)
+    }
+
+    if (nome) {
+      const nomeMatch = {
+        "$match": { nome }
+      }
+      arrayMatch.push(nomeMatch)
+    }
+
+    const produtos = await this.produtoRepository.listar(arrayMatch);
+    return produtos;
   }
 }

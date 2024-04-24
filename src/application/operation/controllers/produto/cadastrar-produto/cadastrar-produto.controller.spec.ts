@@ -1,9 +1,9 @@
-import { CadastrarProdutoUseCase } from "../../../../core/produto/usecase/cadastrar-produto.use-case";
+import { CadastrarProdutoUseCase } from "../../../../../core/produto/usecase/cadastrar-produto/cadastrar-produto.usecase";
 import { CadastrarProdutoController } from "./cadastrar-produto.controller";
-import { IProdutoGateway } from "../../gateways/produto/Iproduto.gateway";
-import { Produto } from "../../../../core/produto/entity/produto.entity";
+import { Produto } from "../../../../../core/produto/entity/produto.entity";
 import { ProdutoDto } from "src/core/produto/dto/cria-produto.dto";
 import { BadRequestException } from "@nestjs/common";
+import { IProdutoGateway } from "../../../gateways/produto/Iproduto.gateway";
 
 const ID_UUID = "0";
 const produtoDto: ProdutoDto = {
@@ -24,6 +24,7 @@ describe('Cadastrar Produto Controller Test Suites', () => {
       cadastrarProduto: jest.fn(async () => {
         return { ...produtoDto, id: ID_UUID }
       }),
+      listarProduto: jest.fn()
     } as IProdutoGateway;
 
     cadastrarProdutoUseCase = new CadastrarProdutoUseCase(produtoGatewayMock);
