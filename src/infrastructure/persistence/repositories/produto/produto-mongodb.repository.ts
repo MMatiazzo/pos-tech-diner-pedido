@@ -20,13 +20,15 @@ export class ProdutoMongoDbRepository implements IProdutoRepository {
   editar(id: string, campo: string, valor: string | number | string[]): Promise<Produto> {
     throw new Error('Method not implemented.');
   }
+
   remover(id: string): Promise<Produto> {
     throw new Error('Method not implemented.');
   }
-  async listar(test: any): Promise<any> {
+
+  async listar(mathArray: any[]): Promise<any> {
     return this.prisma.produto.aggregateRaw({
       pipeline: [
-        ...test
+        ...mathArray
       ]
     });
   }

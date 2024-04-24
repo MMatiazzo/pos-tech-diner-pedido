@@ -22,6 +22,7 @@ describe('CadastrarProdutoUseCase', () => {
       cadastrarProduto: jest.fn(async () => {
         return { ...produtoDto, id: ID_UUID }
       }),
+      listarProduto: jest.fn()
     } as IProdutoGateway;
 
     cadastrarProdutoUseCase = new CadastrarProdutoUseCase(produtoGatewayMock);
