@@ -50,6 +50,8 @@ describe('Listar Produto Use Case', () => {
 
         return bancoMock;
       }),
+      deletarProduto: jest.fn(),
+      editarProduto: jest.fn(),
     } as IProdutoGateway;
 
     listarProdutoUseCase = new ListarProdutoUseCase(produtoGatewayMock);

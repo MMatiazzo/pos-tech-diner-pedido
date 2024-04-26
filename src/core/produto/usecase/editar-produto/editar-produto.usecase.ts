@@ -23,7 +23,6 @@ export class EditarProdutoUseCase {
       throw new BadRequestException(`Campo "${payload.campo}" não está no formado correto`);
     }
 
-    // fazer a mudanca la
     await this.produtoGateway.editarProduto(payload);
   }
 }

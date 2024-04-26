@@ -4,6 +4,7 @@ import { IProdutoRepository } from "src/infrastructure/persistence/repositories/
 import { IProdutoGateway } from "./Iproduto.gateway";
 import { ListarProdutoDto } from "src/core/produto/dto/listar-produto.dto";
 import { EditarProdutoDto } from "src/core/produto/dto/editar-produto.dto";
+import { ObjectId } from "bson";
 
 export class ProdutoGateway implements IProdutoGateway {
   constructor(
@@ -22,7 +23,7 @@ export class ProdutoGateway implements IProdutoGateway {
   async listarProduto(payload: ListarProdutoDto): Promise<Produto[]> {
     const arrayMatch = [];
 
-    const { categoria, nome } = payload;
+    const { categoria, nome, ids } = payload;
 
     if (categoria) {
       const categoriaMatch = {
@@ -36,6 +37,17 @@ export class ProdutoGateway implements IProdutoGateway {
         "$match": { nome }
       }
       arrayMatch.push(nomeMatch)
+    }
+
+    if (ids && ids.length) {
+      const idMatch = {
+        $match: {
+          "_id": {
+            $in: ids.map(id => ({ "$oid": id }))
+          }
+        }
+      }
+      arrayMatch.push(idMatch)
     }
 
     const produtos = await this.produtoRepository.listar(arrayMatch);
