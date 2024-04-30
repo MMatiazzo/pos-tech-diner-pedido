@@ -13,14 +13,12 @@ export class Pedido {
   id?: string;
   status: string;
   produtosIds: string[];
-  cpf?: string;
-  email?: string;
+  clienteId?: string;
 
   private constructor(payload: NewPedidoDto) {
     this.status = payload.status;
     this.produtosIds = payload.produtosIds;
-    if (payload?.cpf) this.cpf = payload.cpf;
-    if (payload?.email) this.email = payload.email;
+    if (payload?.clienteId) this.clienteId = payload.clienteId;
   }
 
   public static new(payload: NewPedidoDto) {

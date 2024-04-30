@@ -13,6 +13,10 @@ import { IPedidoGateway } from "../operation/gateways/pedido/Ipedido.gateway";
 import { PedidoGateway } from "../operation/gateways/pedido/pedido.gateway";
 import { IProdutoGateway } from "../operation/gateways/produto/Iproduto.gateway";
 import { CadastrarPedidoUseCase } from "src/core/pedido/usecase/cadastrar-pedido/cadastrar-pedido.usecase";
+import { ListarPedidoUseCase } from "src/core/pedido/usecase/listar-pedido/listar-pedido.usecase";
+import { ListarPedidoController } from "../operation/controllers/pedido/listar-pedido/listar-pedido.controller";
+import { EditarPedidoStatusUseCase } from "src/core/pedido/usecase/editar-status-pedido/editar-pedido-status.usecase";
+import { EditarPedidoStatusController } from "../operation/controllers/pedido/editar-pedido/editar-pedido-status.controller";
 
 const persistenceProviders: Provider[] = [
   PrismaService,
@@ -46,6 +50,20 @@ const useCaseProviders: Provider[] = [
       pedidoGateway: IPedidoGateway
     ) => new CadastrarPedidoUseCase(produtoGateway, pedidoGateway),
     inject: [IProdutoGateway, IPedidoGateway]
+  },
+  {
+    provide: ListarPedidoUseCase,
+    useFactory: (
+      pedidoGateway: IPedidoGateway
+    ) => new ListarPedidoUseCase(pedidoGateway),
+    inject: [IPedidoGateway]
+  },
+  {
+    provide: EditarPedidoStatusUseCase,
+    useFactory: (
+      pedidoGateway: IPedidoGateway
+    ) => new EditarPedidoStatusUseCase(pedidoGateway),
+    inject: [IPedidoGateway]
   }
 ]
 
@@ -56,6 +74,20 @@ const controllerProviders: Provider[] = [
       cadastrarPedidoUseCase: CadastrarPedidoUseCase
     ) => new CadastrarPedidoController(cadastrarPedidoUseCase),
     inject: [CadastrarPedidoUseCase]
+  },
+  {
+    provide: ListarPedidoController,
+    useFactory: (
+      listarPedidoUseCase: ListarPedidoUseCase
+    ) => new ListarPedidoController(listarPedidoUseCase),
+    inject: [ListarPedidoUseCase]
+  },
+  {
+    provide: EditarPedidoStatusController,
+    useFactory: (
+      editarPedidoStatusUseCase: EditarPedidoStatusUseCase
+    ) => new EditarPedidoStatusController(editarPedidoStatusUseCase),
+    inject: [EditarPedidoStatusUseCase]
   }
 ]
 

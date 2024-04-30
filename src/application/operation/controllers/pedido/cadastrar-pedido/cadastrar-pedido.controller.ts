@@ -9,7 +9,7 @@ export class CadastrarPedidoController {
     private cadastrarPedidoUseCase: CadastrarPedidoUseCase
   ) { }
 
-  async handle(payload: CriaPedidoDto): Promise<Pedido> {
+  async handle(payload: CriaPedidoDto): Promise<void> {
     return this.cadastrarPedidoUseCase.execute(payload);
   }
 }

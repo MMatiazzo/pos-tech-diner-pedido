@@ -7,6 +7,5 @@ export type CriaPedidoDto = {
 export type NewPedidoDto = {
   status: string;
   produtosIds: string[];
-  cpf?: string;
-  email?: string;
+  clienteId?: string;
 }

@@ -13,7 +13,7 @@ export class CadastrarPedidoUseCase {
     private pedidoGateway: IPedidoGateway
   ) { }
 
-  async execute({ produtosIds }: CriaPedidoDto): Promise<Pedido> {
+  async execute({ produtosIds }: CriaPedidoDto): Promise<void> {
     if (!produtosIds.length) {
       throw new BadRequestException('Não é possível fazer um pedido sem produtos');
     }
@@ -23,12 +23,12 @@ export class CadastrarPedidoUseCase {
     if (produtos.length !== produtosIds.length)
       throw new NotFoundException('Produto não encontrado');
 
+    // -- Fazer chamada para a API de cliente e pegar o email --
+
     const pedido = Pedido.new({ produtosIds, status: CardinalDirections.AGUARDANDO_PAGAMENTO });
 
-    const pedidoCadastrado = await this.pedidoGateway.cadastrarPedido(pedido);
+    const pedidoCadastrado = await this.pedidoGateway.cadastrarPedido({ ...pedido, clienteId: null });
 
     // -- MANDAR PARA O MS DE PEDIDO --
-
-    return pedidoCadastrado;
   }
 }

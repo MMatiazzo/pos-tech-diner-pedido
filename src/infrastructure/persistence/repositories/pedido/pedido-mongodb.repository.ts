@@ -10,10 +10,8 @@ export class PedidoMongoDbRepository implements IPedidoRepository {
     private prisma: PrismaService
   ) { }
 
-  async cadastrar(pedido: Pedido): Promise<Pedido> {
-    const pedidoCriado = await this.prisma.pedido.create({ data: pedido });
-    console.log('pedidoCriado => ', pedidoCriado);
-    return null;
+  async cadastrar(pedido: Pedido): Promise<void> {
+    await this.prisma.pedido.create({ data: pedido });
   }
 
   async listar(matchArray: any[]): Promise<any> {
@@ -21,5 +19,15 @@ export class PedidoMongoDbRepository implements IPedidoRepository {
       pipeline: [...matchArray]
     });
     return pedidoCriado;
+  }
+
+  async editar(id: string, field: string, value: string): Promise<Pedido> {
+    const pedido = await this.prisma.pedido.update({
+      where: { id },
+      data: {
+        [field]: value,
+      },
+    });
+    return pedido;
   }
 }
