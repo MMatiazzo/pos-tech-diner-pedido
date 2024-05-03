@@ -1,4 +1,3 @@
-import { Produto } from "src/core/produto/entity/produto.entity";
 
 export type CriaPedidoDto = {
   produtosIds: string[];

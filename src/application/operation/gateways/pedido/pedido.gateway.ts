@@ -17,7 +17,7 @@ export class PedidoGateway implements IPedidoGateway {
   async listarPedido({ ids }: ListarPedidoDto) {
 
     let arrayMatch = [];
-    if (ids && ids.length) {
+    if (ids?.length) {
       const idMatch = {
         $match: {
           "_id": {
@@ -33,8 +33,6 @@ export class PedidoGateway implements IPedidoGateway {
 
   async editarStatusPedido(id: string, status: string): Promise<Pedido> {
     const teste = await this.pedidoRepository.editar(id, 'status', status);
-    console.log('teste =>: ', teste);
-
     return teste;
   }
 }

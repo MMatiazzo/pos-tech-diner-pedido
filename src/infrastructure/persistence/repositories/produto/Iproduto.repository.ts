@@ -2,7 +2,7 @@ import { Produto } from "src/core/produto/entity/produto.entity";
 
 export interface IProdutoRepository {
   cadastrar(produto: Produto): Promise<Produto>;
-  editar(id: string, campo: string, valor: string | number | string[]): Promise<Produto | never>;
+  editar(id: string, campo: string, valor: string | number | string[]): Promise<Produto | null>;
   remover(id: string): Promise<Produto | null>;
   listar(mathArray: any[]): Promise<any>;
 }

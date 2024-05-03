@@ -1,10 +1,9 @@
 import { Inject } from "@nestjs/common";
+import { EditarProdutoDto } from "src/core/produto/dto/editar-produto.dto";
+import { ListarProdutoDto } from "src/core/produto/dto/listar-produto.dto";
 import { Produto } from "src/core/produto/entity/produto.entity";
 import { IProdutoRepository } from "src/infrastructure/persistence/repositories/produto/Iproduto.repository";
 import { IProdutoGateway } from "./Iproduto.gateway";
-import { ListarProdutoDto } from "src/core/produto/dto/listar-produto.dto";
-import { EditarProdutoDto } from "src/core/produto/dto/editar-produto.dto";
-import { ObjectId } from "bson";
 
 export class ProdutoGateway implements IProdutoGateway {
   constructor(
@@ -39,7 +38,7 @@ export class ProdutoGateway implements IProdutoGateway {
       arrayMatch.push(nomeMatch)
     }
 
-    if (ids && ids.length) {
+    if (ids?.length) {
       const idMatch = {
         $match: {
           "_id": {
