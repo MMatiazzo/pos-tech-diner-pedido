@@ -4,6 +4,7 @@
 /data
 /coverage
 /data
+/local-data
 /data-volumes
 # ENV
 .env

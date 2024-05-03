@@ -17,6 +17,8 @@ import { ListarPedidoUseCase } from "src/core/pedido/usecase/listar-pedido/lista
 import { ListarPedidoController } from "../operation/controllers/pedido/listar-pedido/listar-pedido.controller";
 import { EditarPedidoStatusUseCase } from "src/core/pedido/usecase/editar-status-pedido/editar-pedido-status.usecase";
 import { EditarPedidoStatusController } from "../operation/controllers/pedido/editar-pedido/editar-pedido-status.controller";
+import { IQueueGateway } from "../operation/gateways/queue/Iqueue.gateway";
+import { SQSQueue } from "../operation/gateways/queue/aws/sqs/sqs-queue";
 
 const persistenceProviders: Provider[] = [
   PrismaService,
@@ -39,6 +41,11 @@ const persistenceProviders: Provider[] = [
     provide: IPedidoGateway,
     useFactory: (pedidoRepository: IPedidoRepository) => new PedidoGateway(pedidoRepository),
     inject: [IPedidoRepository]
+  },
+  {
+    provide: IQueueGateway,
+    useFactory: () => new SQSQueue(),
+    inject: []
   }
 ]
 
@@ -47,9 +54,10 @@ const useCaseProviders: Provider[] = [
     provide: CadastrarPedidoUseCase,
     useFactory: (
       produtoGateway: IProdutoGateway,
-      pedidoGateway: IPedidoGateway
-    ) => new CadastrarPedidoUseCase(produtoGateway, pedidoGateway),
-    inject: [IProdutoGateway, IPedidoGateway]
+      pedidoGateway: IPedidoGateway,
+      queueGateway: IQueueGateway,
+    ) => new CadastrarPedidoUseCase(produtoGateway, pedidoGateway, queueGateway),
+    inject: [IProdutoGateway, IPedidoGateway, IQueueGateway]
   },
   {
     provide: ListarPedidoUseCase,

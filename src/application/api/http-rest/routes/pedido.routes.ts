@@ -44,4 +44,14 @@ export class PedidoControllerRoute {
   ): Promise<void> {
     await this.editarPedidoStatusController.handle(payload);
   }
+
+  @Post('/teste-envia-mensagem')
+  async enviarMensagemTeste(): Promise<void> {
+    console.log('dentro do request teste');
+    // await SQSQueue.enviarMensagem(process.env.SQS_CRIAR_PAGAMENTO_QUEUE, {
+    //   "mensagem": "teste",
+    //   "Numero": "teste2"
+    // });
+    console.log('terminou o request teste');
+  }
 }

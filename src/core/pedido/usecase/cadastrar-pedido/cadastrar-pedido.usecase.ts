@@ -3,6 +3,7 @@ import { IProdutoGateway } from "src/application/operation/gateways/produto/Ipro
 import { CriaPedidoDto } from "../../dto/cria-pedido.dto";
 import { IPedidoGateway } from "src/application/operation/gateways/pedido/Ipedido.gateway";
 import { CardinalDirections, Pedido } from "../../entity/pedido.entity";
+import { IQueueGateway } from "src/application/operation/gateways/queue/Iqueue.gateway";
 
 @Injectable()
 export class CadastrarPedidoUseCase {
@@ -10,7 +11,9 @@ export class CadastrarPedidoUseCase {
     @Inject(IProdutoGateway)
     private produtoGateway: IProdutoGateway,
     @Inject(IPedidoGateway)
-    private pedidoGateway: IPedidoGateway
+    private pedidoGateway: IPedidoGateway,
+    @Inject(IQueueGateway)
+    private queueGateway: IQueueGateway
   ) { }
 
   async execute({ produtosIds }: CriaPedidoDto): Promise<void> {
@@ -29,6 +32,9 @@ export class CadastrarPedidoUseCase {
 
     const pedidoCadastrado = await this.pedidoGateway.cadastrarPedido({ ...pedido, clienteId: null });
 
-    // -- MANDAR PARA O MS DE PEDIDO --
+    await this.queueGateway.enviarMensagem(
+      process.env.SQS_CRIAR_PAGAMENTO_QUEUE,
+      JSON.stringify(pedidoCadastrado)
+    );
   }
 }

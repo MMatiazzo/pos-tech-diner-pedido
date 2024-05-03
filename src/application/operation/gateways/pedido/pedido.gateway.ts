@@ -10,8 +10,8 @@ export class PedidoGateway implements IPedidoGateway {
     private pedidoRepository: IPedidoRepository
   ) { }
 
-  async cadastrarPedido(pedido: Pedido): Promise<void> {
-    await this.pedidoRepository.cadastrar(pedido);
+  async cadastrarPedido(pedido: Pedido): Promise<any> {
+    return this.pedidoRepository.cadastrar(pedido);
   }
 
   async listarPedido({ ids }: ListarPedidoDto) {
@@ -35,6 +35,6 @@ export class PedidoGateway implements IPedidoGateway {
     const teste = await this.pedidoRepository.editar(id, 'status', status);
     console.log('teste =>: ', teste);
 
-    return null;
+    return teste;
   }
 }

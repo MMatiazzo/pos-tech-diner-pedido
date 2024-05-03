@@ -1,0 +1,16 @@
+# CRIANDO FILAS
+- awslocal sqs create-queue --queue-name criar-pagamento-dlq
+# {
+#     "QueueUrl": "http://localhost:4566/000000000000/criar-pagamento-dlq"
+# }
+
+- awslocal sqs create-queue --queue-name criar-pagamento --attributes '{"RedrivePolicy": "{\"deadLetterTargetArn\": \"arn:aws:sqs:us-east-1:000000000000:criar-pagamento-dlq\", \"maxReceiveCount\": 3}"}'
+# {
+#     "QueueUrl": "http://localhost:4566/000000000000/criar-pagamento"
+# }
+
+# CRIANDO USUÀRIO
+- awslocal iam create-user --user-name teste
+- awslocal iam create-access-key --user-name teste
+
+- mongo_command=docker run --name mongo -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME="monty" -e MONGO_INITDB_ROOT_PASSWORD="pass" -d prismagraphql/mongo-single-replica:5.0.3

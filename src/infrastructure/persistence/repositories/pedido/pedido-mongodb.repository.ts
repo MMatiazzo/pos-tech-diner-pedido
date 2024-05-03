@@ -10,8 +10,8 @@ export class PedidoMongoDbRepository implements IPedidoRepository {
     private prisma: PrismaService
   ) { }
 
-  async cadastrar(pedido: Pedido): Promise<void> {
-    await this.prisma.pedido.create({ data: pedido });
+  async cadastrar(pedido: Pedido): Promise<any> {
+    return this.prisma.pedido.create({ data: pedido });
   }
 
   async listar(matchArray: any[]): Promise<any> {
