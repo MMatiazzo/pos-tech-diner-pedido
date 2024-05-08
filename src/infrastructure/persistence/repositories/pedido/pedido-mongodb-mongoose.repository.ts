@@ -28,6 +28,6 @@ export class PedidoMongodbMongooseRepository implements IPedidoRepository {
   async editar(id: string, field: string, value: string): Promise<Pedido> {
     return this.pedidoModel.findByIdAndUpdate(id, {
       [field]: value
-    });
+    }, { new: true },);
   }
 }

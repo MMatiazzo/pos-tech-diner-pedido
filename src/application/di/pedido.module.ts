@@ -72,9 +72,11 @@ const useCaseProviders: Provider[] = [
   {
     provide: EditarPedidoStatusUseCase,
     useFactory: (
-      pedidoGateway: IPedidoGateway
-    ) => new EditarPedidoStatusUseCase(pedidoGateway),
-    inject: [IPedidoGateway]
+      pedidoGateway: IPedidoGateway,
+      produtoGateway: IProdutoGateway,
+      queueGateway: IQueueGateway,
+    ) => new EditarPedidoStatusUseCase(pedidoGateway, produtoGateway, queueGateway),
+    inject: [IPedidoGateway, IProdutoGateway, IQueueGateway]
   }
 ]
 
