@@ -9,7 +9,7 @@ export class SQSQueue implements IQueueGateway {
         accessKeyId: process.env.AWS_ACESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACESS_KEY
       },
-      endpoint: "http://sqs.us-east-1.localhost.localstack.cloud:4566" // tirar dps
+      // endpoint: "http://sqs.us-east-1.localhost.localstack.cloud:4566" // tirar dps
     });
 
     return client;

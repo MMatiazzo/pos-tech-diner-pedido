@@ -12,6 +12,11 @@ export class EditarPedidoStatusUseCase {
   async execute({ id, status }: EditarPedidoDto): Promise<void> {
     const pedidoModificado = await this.pedidoGateway.editarStatusPedido(id, status);
 
+    // se status === pagamento aprovado => mandar para o ms de producao
+
+
+
+
     // -- MANDAR PARA O MS DE PRODUCAO os detalhes do pedido juntamente com o pedido já modificado --
   }
 }

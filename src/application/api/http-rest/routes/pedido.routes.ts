@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Inject, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Inject, Patch, Post, Query, Headers } from '@nestjs/common';
 
 import { CriaPedidoDto } from 'src/core/pedido/dto/cria-pedido.dto';
 import { Pedido } from 'src/core/pedido/entity/pedido.entity';
@@ -26,9 +26,10 @@ export class PedidoControllerRoute {
   @Post('/cadastrar')
   @HttpCode(201)
   async cadastrar(
-    @Body() payload: CriaPedidoDto
+    @Body() payload: CriaPedidoDto,
+    @Headers() { authorization }: { authorization: string },
   ): Promise<void> {
-    await this.cadastrarPedidoController.handle(payload);
+    await this.cadastrarPedidoController.handle(payload, authorization);
   }
 
   @Get('/listar')

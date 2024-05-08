@@ -27,6 +27,6 @@ model Pedido {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   status      String
   createdAt   DateTime @default(now())
-  clienteId   String?  @db.ObjectId
+  clienteId   String?
   produtosIds String[] @db.ObjectId
 }
