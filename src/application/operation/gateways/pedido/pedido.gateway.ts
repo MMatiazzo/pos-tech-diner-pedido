@@ -32,7 +32,7 @@ export class PedidoGateway implements IPedidoGateway {
   }
 
   async editarStatusPedido(id: string, status: string): Promise<Pedido> {
-    const teste = await this.pedidoRepository.editar(id, 'status', status);
-    return teste;
+    const pedidoModificado = await this.pedidoRepository.editar(id, 'status', status);
+    return pedidoModificado;
   }
 }

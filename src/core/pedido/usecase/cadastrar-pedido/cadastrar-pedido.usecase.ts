@@ -22,13 +22,14 @@ export class CadastrarPedidoUseCase {
       throw new BadRequestException('Não é possível fazer um pedido sem produtos');
     }
 
-    const produtos = await this.produtoGateway.listarProduto({ ids: produtosIds });
+    const ids = produtosIds.join(',');
+    const produtos = await this.produtoGateway.listarProduto({ ids });
 
     if (produtos.length !== produtosIds.length)
       throw new NotFoundException('Produto não encontrado');
 
     const [, token] = authorization.split(' ');
-    console.log('teste => ', token);
+
     const clienteResponse = await fetch(`${env.URL_CLIENTE_MS}/decodificar-acessToken`,
       {
         method: "post",
@@ -39,6 +40,8 @@ export class CadastrarPedidoUseCase {
 
     const clienteResponseJson = await clienteResponse.json();
 
+    console.log('cliente response => ', clienteResponseJson);
+
     if (!clienteResponseJson?.nome)
       throw new BadRequestException('Cliente não encontrado');
 
@@ -48,6 +51,8 @@ export class CadastrarPedidoUseCase {
       ...pedido,
       clienteId: clienteResponseJson.email
     });
+
+    console.log('pedidoCadastrado => ', pedidoCadastrado);
 
     await this.queueGateway.enviarMensagem(
       process.env.SQS_CRIAR_PAGAMENTO_QUEUE,

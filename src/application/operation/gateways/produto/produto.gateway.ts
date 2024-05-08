@@ -4,6 +4,7 @@ import { ListarProdutoDto } from "src/core/produto/dto/listar-produto.dto";
 import { Produto } from "src/core/produto/entity/produto.entity";
 import { IProdutoRepository } from "src/infrastructure/persistence/repositories/produto/Iproduto.repository";
 import { IProdutoGateway } from "./Iproduto.gateway";
+import { ObjectId } from "bson";
 
 export class ProdutoGateway implements IProdutoGateway {
   constructor(
@@ -38,11 +39,12 @@ export class ProdutoGateway implements IProdutoGateway {
       arrayMatch.push(nomeMatch)
     }
 
-    if (ids?.length) {
+    if (ids) {
+      const idsToSearch = ids.split(',').map(id => new ObjectId(id));
       const idMatch = {
         $match: {
           "_id": {
-            $in: ids.map(id => ({ "$oid": id }))
+            $in: idsToSearch
           }
         }
       }

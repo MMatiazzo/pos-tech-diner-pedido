@@ -24,4 +24,4 @@ COPY --from=builder /app/prisma ./prisma
 EXPOSE 3333
 
 # CMD [  "npm", "run", "start:dev" ]
-CMD [  "npm", "run", "start:migrate:prod" ]
+CMD [  "npm", "run", "start:prod" ]

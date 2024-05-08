@@ -4,6 +4,9 @@ import { Prisma } from '@prisma/client';
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
   catch(error: any, host: ArgumentsHost) {
+
+    console.error(error);
+
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
 
