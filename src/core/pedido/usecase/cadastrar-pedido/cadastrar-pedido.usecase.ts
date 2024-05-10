@@ -56,7 +56,7 @@ export class CadastrarPedidoUseCase {
 
     await this.queueGateway.enviarMensagem(
       process.env.SQS_CRIAR_PAGAMENTO_QUEUE,
-      JSON.stringify(pedidoCadastrado)
+      pedidoCadastrado
     );
   }
 }

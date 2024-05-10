@@ -13,6 +13,7 @@ export class ListarPedidoUseCase {
 
   async execute({ ids }: ListarPedidoDto): Promise<Pedido[]> {
     const pedidos = await this.pedidoGateway.listarPedido({ ids });
+    console.log('pedidos no listar => ', pedidos);
     return pedidos;
   }
 }
