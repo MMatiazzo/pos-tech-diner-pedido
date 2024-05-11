@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: postech
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pos-tech-diner-pedido-secret
+  namespace: postech
+data:
+  DATABASE_URL: #{DATABASE_URL}#
+  AWS_ACESS_KEY_ID: #{AWS_ACESS_KEY_ID}#
+  AWS_SECRET_ACESS_KEY: #{AWS_SECRET_ACESS_KEY}#
+  SQS_CRIAR_PAGAMENTO_QUEUE: #{SQS_CRIAR_PAGAMENTO_QUEUE}#
+  SQS_CRIAR_PEDIDO_PRODUCAO_QUEUE: #{SQS_CRIAR_PEDIDO_PRODUCAO_QUEUE}#
+  URL_CLIENTE_MS: #{URL_CLIENTE_MS}#
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pos-tech-diner-pedido-config-map
+  namespace: postech
+data:
+  AWS_REGION: "us-east-1"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pos-tech-diner-pedido-deployment
+  namespace: postech
+  labels:
+    app: pos-tech-diner-pedido-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pos-tech-diner-pedido-deployment
+    spec:
+      containers:
+        - name: pos-tech-diner-pedido-image
+          image: #{POS_TECH_DINER_IMAGE}#
+          ports:
+            - containerPort: 3333
+          envFrom:
+            - secretRef:
+                name: "pos-tech-diner-pedido-secret"
+            - configMapRef:
+                name: "pos-tech-diner-pedido-config-map"
+          resources:
+            requests:
+              cpu: 100m
+            limits:
+              cpu: 500m
+  selector:
+    matchLabels:
+      app: pos-tech-diner-pedido-deployment
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pos-tech-diner-pedido-service
+  namespace: postech
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+    service.beta.kubernetes.io/aws-load-balancer-name: test
+spec:
+  ports:
+    - port: 80
+      targetPort: 3333
+      protocol: TCP
+  type: LoadBalancer
+  selector:
+    app: pos-tech-diner-pedido-deployment
