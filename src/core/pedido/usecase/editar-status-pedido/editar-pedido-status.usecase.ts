@@ -17,6 +17,9 @@ export class EditarPedidoStatusUseCase {
   ) { }
 
   async execute({ id, status }: EditarPedidoDto): Promise<void> {
+
+    console.log('entrei no editar pedido');
+
     const pedidoModificado = await this.pedidoGateway.editarStatusPedido(id, status);
 
     const produtos = await this.produtoGateway.listarProduto({ ids: pedidoModificado.produtosIds.join(',') })
@@ -28,10 +31,18 @@ export class EditarPedidoStatusUseCase {
       produtos: produtos
     }
 
-    if (status === CardinalDirections.PAGAMENTO_CONFIRMADO && pedidoModificado) {
+    console.log('pedido para modificar > ', pedido);
+
+    console.log('status => ', status);
+    console.log('CardinalDirections.PAGAMENTO_CONFIRMADO => ', CardinalDirections.PAGAMENTO_CONFIRMADO);
+
+    if (status === CardinalDirections.PAGAMENTO_CONFIRMADO) {
+
+      console.log('entrei no bagulho');
+
       await this.queueGateway.enviarMensagem(
-        process.env.SQS_EDITAR_PEDIDO_STATUS_QUEUE,
-        JSON.stringify(pedido)
+        process.env.SQS_CRIAR_PEDIDO_PRODUCAO_QUEUE,
+        pedido
       );
     }
   }
