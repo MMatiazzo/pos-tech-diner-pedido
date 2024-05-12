@@ -11,8 +11,8 @@ metadata:
   namespace: postech
 data:
   DATABASE_URL: #{DATABASE_URL}#
-  AWS_ACESS_KEY_ID: #{AWS_ACESS_KEY_ID}#
-  AWS_SECRET_ACESS_KEY: #{AWS_SECRET_ACESS_KEY}#
+  AWS_ACESS_KEY_ID_B64: #{AWS_ACESS_KEY_ID_B64}#
+  AWS_SECRET_ACESS_KEY_B64: #{AWS_SECRET_ACESS_KEY_B64}#
   SQS_CRIAR_PAGAMENTO_QUEUE: #{SQS_CRIAR_PAGAMENTO_QUEUE}#
   SQS_CRIAR_PEDIDO_PRODUCAO_QUEUE: #{SQS_CRIAR_PEDIDO_PRODUCAO_QUEUE}#
   URL_CLIENTE_MS: #{URL_CLIENTE_MS}#
@@ -43,7 +43,7 @@ spec:
     spec:
       containers:
         - name: pos-tech-diner-pedido-image
-          image: #{POS_TECH_DINER_IMAGE}#
+          image: #{POS_TECH_DINER_PEDIDO_IMAGE}#
           ports:
             - containerPort: 3333
           envFrom:

@@ -6,8 +6,8 @@ export class SQSQueue implements IQueueGateway {
     const client = new SQSClient({
       region: process.env.AWS_REGION,
       credentials: {
-        accessKeyId: process.env.AWS_ACESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACESS_KEY
+        accessKeyId: process.env.AWS_ACESS_KEY_ID_B64,
+        secretAccessKey: process.env.AWS_SECRET_ACESS_KEY_B64
       },
       // endpoint: "http://sqs.us-east-1.localhost.localstack.cloud:4566" // tirar dps
     });
