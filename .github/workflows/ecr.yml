@@ -81,10 +81,13 @@ jobs:
         with:
           files: '["*.yml"]'
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL}}
-          AWS_ACCESS_KEY_ID_B64: ${{ secrets.AWS_ACCESS_KEY_ID_B64}}
-          AWS_SECRET_ACCESS_KEY_B64: ${{ secrets.AWS_SECRET_ACCESS_KEY_B64}}
           POS_TECH_DINER_PEDIDO_IMAGE: ${{ secrets.POS_TECH_DINER_PEDIDO_IMAGE}}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          AWS_ACCESS_KEY_ID_B64: ${{ secrets.AWS_ACCESS_KEY_ID_B64 }}
+          AWS_SECRET_ACCESS_KEY_B64: ${{ secrets.AWS_SECRET_ACCESS_KEY_B64 }}
+          SQS_CRIAR_PAGAMENTO_QUEUE: ${{ secrets.SQS_CRIAR_PAGAMENTO_QUEUE }}
+          SQS_CRIAR_PEDIDO_PRODUCAO_QUEUE: ${{ secrets.SQS_CRIAR_PEDIDO_PRODUCAO_QUEUE }}
+          URL_CLIENTE_MS: ${{ secrets.URL_CLIENTE_MS }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
