@@ -2,7 +2,7 @@ import { BadRequestException, Inject, Injectable, NotFoundException } from '@nes
 import { IProdutoRepository } from './Iproduto.repository';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Produto } from 'src/core/produto/entity/produto.entity';
-import { Prisma } from '@prisma/client';
+import { PrismaClientValidationError, PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class ProdutoMongoDbRepository implements IProdutoRepository {
@@ -19,7 +19,7 @@ export class ProdutoMongoDbRepository implements IProdutoRepository {
 
       return novoProduto;
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientValidationError) {
+      if (error instanceof PrismaClientValidationError) {
         throw new BadRequestException('Produto inválido');
       }
       throw error;
@@ -47,7 +47,7 @@ export class ProdutoMongoDbRepository implements IProdutoRepository {
 
       return produto;
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      if (error instanceof PrismaClientKnownRequestError && error.code === 'P2025') {
         throw new NotFoundException('Produto não encontrado');
       }
       throw error;

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 
 import { IProdutoGateway } from "../../../../application/operation/gateways/produto/Iproduto.gateway";
-import { Produto } from "@prisma/client";
+import { Produto } from "../../entity/produto.entity";
 
 @Injectable()
 export class DeletarProdutoUseCase {
