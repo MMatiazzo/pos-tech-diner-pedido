@@ -4,13 +4,12 @@ import { IProdutoRepository } from "src/infrastructure/persistence/repositories/
 import { ProdutoGateway } from "../operation/gateways/produto/produto.gateway";
 
 import { MongooseModule, getModelToken } from "@nestjs/mongoose";
-import { Produto } from "@prisma/client";
 import { Model } from "mongoose";
 import { CadastrarPedidoUseCase } from "src/core/pedido/usecase/cadastrar-pedido/cadastrar-pedido.usecase";
 import { EditarPedidoStatusUseCase } from "src/core/pedido/usecase/editar-status-pedido/editar-pedido-status.usecase";
 import { ListarPedidoUseCase } from "src/core/pedido/usecase/listar-pedido/listar-pedido.usecase";
-import { PedidoDocument, PedidoModel, PedidoSchema } from "src/infrastructure/persistence/mongoose/schemas/pedido/pedido.schema";
-import { ProdutoDocument, ProdutoModel, ProdutoSchema } from "src/infrastructure/persistence/mongoose/schemas/produto/produto.schema";
+import { PedidoDocument, PedidoSchema } from "src/infrastructure/persistence/mongoose/schemas/pedido/pedido.schema";
+import { ProdutoDocument, ProdutoSchema } from "src/infrastructure/persistence/mongoose/schemas/produto/produto.schema";
 import { IPedidoRepository } from "src/infrastructure/persistence/repositories/pedido/Ipedido.repository";
 import { PedidoMongodbMongooseRepository } from "src/infrastructure/persistence/repositories/pedido/pedido-mongodb-mongoose.repository";
 import { ProdutoMongodbMongooseRepository } from "src/infrastructure/persistence/repositories/produto/produto-mongodb-mongoose.repository";

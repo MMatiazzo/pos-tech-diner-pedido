@@ -1,5 +1,4 @@
 import { Catch, ExceptionFilter, ArgumentsHost, HttpStatus, BadRequestException, NotFoundException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
@@ -10,14 +9,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
 
-    if (error instanceof Prisma.PrismaClientValidationError) {
-      // Handle Prisma errors
-      response.status(HttpStatus.BAD_REQUEST).json({
-        statusCode: HttpStatus.BAD_REQUEST,
-        message: 'Prisma error occurred',
-        error: error.message,
-      });
-    } else if (error instanceof BadRequestException) {
+    if (error instanceof BadRequestException) {
       response.status(HttpStatus.BAD_REQUEST).json({
         statusCode: HttpStatus.BAD_REQUEST,
         message: 'Not Found',

@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { Produto } from '@prisma/client';
+import { Produto } from 'src/core/produto/entity/produto.entity';
 import { DeletarProdutoUseCase } from 'src/core/produto/usecase/deletar-produto/deletar-produto.usecase';
 
 export class DeletarProdutoController {
