@@ -1,0 +1,111 @@
+name: Push image to Amazon ECR
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  ECR_REPOSITORY: ${{ vars.MY_ECR_REPOSITORY }}
+
+permissions:
+  contents: read
+
+jobs:
+  sonarcloud:
+    name: SonarQube Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: npm ci
+      - name: Run tests
+        run: npm run test:cov
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        with:
+          args: >
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  deploy-ecr:
+    name: Push image
+    needs: sonarcloud
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: latest
+        run: |
+          # Build a docker container and
+          # push it to ECR so that it can
+          # be deployed to ECS.
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+  deploy-eks:
+    name: "Deploy pod to EKS"
+    needs: deploy-ecr
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Inject secrets
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["*.yml"]'
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL}}
+          AWS_ACCESS_KEY_ID_B64: ${{ secrets.AWS_ACCESS_KEY_ID_B64}}
+          AWS_SECRET_ACCESS_KEY_B64: ${{ secrets.AWS_SECRET_ACCESS_KEY_B64}}
+          POS_TECH_DINER_PEDIDO_IMAGE: ${{ secrets.POS_TECH_DINER_PEDIDO_IMAGE}}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Update KubeConfig
+        shell: bash
+        run: |
+          aws eks update-kubeconfig --name pos-tech-diner-cluster --region us-east-1
+
+      - name: Deploy To Cluster
+        shell: bash
+        run: kubectl apply -f pos-tech-diner-pedido.yml
+
+      - name: Update deployment image
+        shell: bash
+        run: kubectl set image deployment/pos-tech-diner-pedido-deployment pos-tech-diner-pedido-image=${{ secrets.POS_TECH_DINER_PEDIDO_IMAGE }} -n postech
+
+      - name: POD to rollout
+        shell: bash
+        run: kubectl rollout restart deployment/pos-tech-diner-pedido-deployment -n postech
