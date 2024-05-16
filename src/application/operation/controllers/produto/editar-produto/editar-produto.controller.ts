@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common';
-import { EditarProdutoDto } from 'src/core/produto/dto/editar-produto.dto';
-import { EditarProdutoUseCase } from 'src/core/produto/usecase/editar-produto/editar-produto.usecase';
+import { EditarProdutoDto } from '../../../../../core/produto/dto/editar-produto.dto';
+import { EditarProdutoUseCase } from '../../../../../core/produto/usecase/editar-produto/editar-produto.usecase';
 
 export class EditarProdutoController {
   constructor(

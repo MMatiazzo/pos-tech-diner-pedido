@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common';
-import { Produto } from 'src/core/produto/entity/produto.entity';
-import { DeletarProdutoUseCase } from 'src/core/produto/usecase/deletar-produto/deletar-produto.usecase';
+import { Produto } from '../../../../../core/produto/entity/produto.entity';
+import { DeletarProdutoUseCase } from '../../../../../core/produto/usecase/deletar-produto/deletar-produto.usecase';
 
 export class DeletarProdutoController {
   constructor(

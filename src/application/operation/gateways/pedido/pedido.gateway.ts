@@ -1,8 +1,8 @@
 import { Inject } from "@nestjs/common";
-import { Pedido } from "src/core/pedido/entity/pedido.entity";
-import { IPedidoRepository } from "src/infrastructure/persistence/repositories/pedido/Ipedido.repository";
+import { Pedido } from "../../../../core/pedido/entity/pedido.entity";
+import { IPedidoRepository } from "../../../../infrastructure/persistence/repositories/pedido/Ipedido.repository";
 import { IPedidoGateway } from "./Ipedido.gateway";
-import { ListarPedidoDto } from "src/core/pedido/dto/listar-pedido.dto";
+import { ListarPedidoDto } from "../../../../core/pedido/dto/listar-pedido.dto";
 
 export class PedidoGateway implements IPedidoGateway {
   constructor(

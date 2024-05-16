@@ -1,76 +1,45 @@
-// import { CadastrarProdutoUseCase } from "../../../../../core/produto/usecase/cadastrar-produto/cadastrar-produto.usecase";
-// import { CadastrarProdutoController } from "./cadastrar-produto.controller";
-// import { Produto } from "../../../../../core/produto/entity/produto.entity";
-// import { ProdutoDto } from "src/core/produto/dto/cria-produto.dto";
-// import { BadRequestException } from "@nestjs/common";
-// import { IProdutoGateway } from "../../../gateways/produto/Iproduto.gateway";
+import { Test, TestingModule } from '@nestjs/testing';
+import { CadastrarProdutoController } from './cadastrar-produto.controller';
+import { CadastrarProdutoUseCase } from '../../../../../core/produto/usecase/cadastrar-produto/cadastrar-produto.usecase';
+import { ProdutoDto } from '../../../../../core/produto/dto/cria-produto.dto';
+import { Produto } from '../../../../../core/produto/entity/produto.entity';
 
-// const ID_UUID = "0";
-// const produtoDto: ProdutoDto = {
-//   "nome": "teste",
-//   "categoria": "Lanche",
-//   "preco": 10,
-//   "descricao": "Lanche para todos",
-//   "imagens": []
-// }
+describe('CadastrarProdutoController', () => {
+  let controller: CadastrarProdutoController;
+  let useCase: CadastrarProdutoUseCase;
 
-describe('Cadastrar Produto Controller Test Suites', () => {
-  it('teste => ', () => {
-    console.log('teste');
+  beforeEach(async () => {
+    const useCaseMock: Partial<CadastrarProdutoUseCase> = {
+      execute: jest.fn(),
+    };
+
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [CadastrarProdutoController],
+      providers: [{ provide: CadastrarProdutoUseCase, useValue: useCaseMock }],
+    }).compile();
+
+    controller = module.get<CadastrarProdutoController>(CadastrarProdutoController);
+    useCase = module.get<CadastrarProdutoUseCase>(CadastrarProdutoUseCase);
   });
-  //   let cadastrarProdutoController: CadastrarProdutoController;
-  //   let cadastrarProdutoUseCase: CadastrarProdutoUseCase;
-  //   let produtoGatewayMock: IProdutoGateway;
 
-  //   beforeEach(() => {
-  //     produtoGatewayMock = {
-  //       cadastrarProduto: jest.fn(async () => {
-  //         return { ...produtoDto, id: ID_UUID }
-  //       }),
-  //       listarProduto: jest.fn()
-  //     } as IProdutoGateway;
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
+  });
 
-  //     cadastrarProdutoUseCase = new CadastrarProdutoUseCase(produtoGatewayMock);
-  //     cadastrarProdutoController = new CadastrarProdutoController(cadastrarProdutoUseCase);
-  //   });
+  describe('handle', () => {
+    it('Deve chamar CadastrarProdutoUseCase com o produto correto', async () => {
+      const produto: ProdutoDto = { nome: 'Product', preco: 10, categoria: 'Category', descricao: '', imagens: [] };
+      jest.spyOn(useCase, 'execute').mockResolvedValueOnce({} as Produto);
+      await controller.handle(produto);
+      expect(useCase.execute).toHaveBeenCalledWith(produto);
+    });
 
-  //   it('Deve ser capaz de criar um novo produto', async () => {
-  //     //Arrange
-  //     const produtoCriado = await cadastrarProdutoController.handle(produtoDto);
-
-  //     // Assert
-  //     expect(produtoCriado?.id).toEqual(ID_UUID);
-  //     expect(produtoGatewayMock.cadastrarProduto).toHaveBeenNthCalledWith(1, produtoDto);
-  //   });
-
-  //   it('Não deve ser capaz de cadastrar um produto sem nome', async () => {
-  //     //Arrange
-  //     let error: Error | undefined;
-  //     try {
-  //       const mockProduto = Produto.new({ ...produtoDto, nome: "" }); // Create a mock Produto object if necessary
-  //       await cadastrarProdutoUseCase.execute(mockProduto);
-  //     } catch (err) {
-  //       error = err;
-  //     }
-
-  //     // Assert
-  //     expect(error).toBeInstanceOf(BadRequestException);
-  //     expect(error?.message).toBe("Produto não contém todas os atributos necessários");
-  //   });
-
-  //   it('Não deve ser capaz de cadastrar um produto com preço menor ou igual a zero', async () => {
-  //     //Arrange
-  //     const PRECO_INVALIDO = 0;
-  //     let error: Error | undefined;
-  //     try {
-  //       await cadastrarProdutoController.handle({ ...produtoDto, preco: PRECO_INVALIDO });
-  //     } catch (err) {
-  //       error = err;
-  //     }
-
-  //     // Assert
-  //     expect(error).toBeInstanceOf(BadRequestException);
-  //     expect(error?.message).toBe("Produto não contém todas os atributos necessários");
-  //   });
-
+    it('Deve retornar o resultado do CadastrarProdutoUseCase', async () => {
+      const produto: ProdutoDto = { nome: 'Product', preco: 10, categoria: 'Category', descricao: '', imagens: [] };
+      const produtoCriado: Produto = { id: 'some-id', ...produto };
+      jest.spyOn(useCase, 'execute').mockResolvedValueOnce(produtoCriado);
+      const result = await controller.handle(produto);
+      expect(result).toEqual(produtoCriado);
+    });
+  });
 });

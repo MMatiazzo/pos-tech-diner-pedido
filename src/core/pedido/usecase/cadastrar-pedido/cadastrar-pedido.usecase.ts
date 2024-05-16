@@ -1,9 +1,9 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
-import { IProdutoGateway } from "src/application/operation/gateways/produto/Iproduto.gateway";
+import { IProdutoGateway } from "../../../../application/operation/gateways/produto/Iproduto.gateway";
 import { CriaPedidoDto } from "../../dto/cria-pedido.dto";
-import { IPedidoGateway } from "src/application/operation/gateways/pedido/Ipedido.gateway";
+import { IPedidoGateway } from "../../../../application/operation/gateways/pedido/Ipedido.gateway";
 import { CardinalDirections, Pedido } from "../../entity/pedido.entity";
-import { IQueueGateway } from "src/application/operation/gateways/queue/Iqueue.gateway";
+import { IQueueGateway } from "../../../../application/operation/gateways/queue/Iqueue.gateway";
 import { env } from "process";
 
 @Injectable()
