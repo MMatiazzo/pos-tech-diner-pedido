@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ProdutoGateway } from './produto.gateway';
 import { ObjectId } from 'bson';
 import { IProdutoRepository } from '../../../../infrastructure/persistence/repositories/produto/Iproduto.repository';
-import { Produto } from '@prisma/client';
 import { ListarProdutoDto } from '../../../../core/produto/dto/listar-produto.dto';
 import { EditarProdutoDto } from '../../../../core/produto/dto/editar-produto.dto';
+import { Produto } from 'src/core/produto/entity/produto.entity';
 
 describe('ProdutoGateway', () => {
   let gateway: ProdutoGateway;
