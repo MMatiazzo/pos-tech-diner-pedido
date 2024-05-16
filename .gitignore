@@ -7,7 +7,7 @@
 /local-data
 /data-volumes
 # ENV
-.env
+.env.prod
 *-lock.json
 
 *node_modules*

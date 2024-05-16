@@ -1,9 +1,9 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { IPedidoGateway } from "src/application/operation/gateways/pedido/Ipedido.gateway";
+import { IPedidoGateway } from "../../../../application/operation/gateways/pedido/Ipedido.gateway";
 import { EditarPedidoDto } from "../../dto/editar-pedido.dto";
 import { CardinalDirections } from "../../entity/pedido.entity";
-import { IQueueGateway } from "src/application/operation/gateways/queue/Iqueue.gateway";
-import { IProdutoGateway } from "src/application/operation/gateways/produto/Iproduto.gateway";
+import { IQueueGateway } from "../../../../application/operation/gateways/queue/Iqueue.gateway";
+import { IProdutoGateway } from "../../../../application/operation/gateways/produto/Iproduto.gateway";
 
 @Injectable()
 export class EditarPedidoStatusUseCase {

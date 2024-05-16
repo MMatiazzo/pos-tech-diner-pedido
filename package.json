@@ -70,6 +70,17 @@
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      ".module.",
+      ".spec.",
+      ".entity.",
+      ".schema.",
+      ".service.",
+      ".exception.",
+      "I.",
+      ".routes."
+    ],
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
