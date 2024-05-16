@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
-import { ListarProdutoDto } from 'src/core/produto/dto/listar-produto.dto';
-import { Produto } from 'src/core/produto/entity/produto.entity';
-import { ListarProdutoUseCase } from 'src/core/produto/usecase/listar-produto/listrar-produto.usecase';
+import { ListarProdutoDto } from '../../../../../core/produto/dto/listar-produto.dto';
+import { Produto } from '../../../../../core/produto/entity/produto.entity';
+import { ListarProdutoUseCase } from '../../../../../core/produto/usecase/listar-produto/listrar-produto.usecase';
 
 export class ListarProdutoController {
   constructor(
