@@ -9,6 +9,8 @@ import { ListarPedidoController } from 'src/application/operation/controllers/pe
 import { EditarPedidoDto } from 'src/core/pedido/dto/editar-pedido.dto';
 import { ListarPedidoDto } from 'src/core/pedido/dto/listar-pedido.dto';
 
+// deploy trigger
+
 @Controller('/pedido')
 export class PedidoControllerRoute {
 
