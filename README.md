@@ -8,6 +8,8 @@ Substituir a váriavel DATABASE_URL com a connection string mongodb
 <br>
 Executar o comando `npm run start:dev`
 
+##### A collection com os requests está no arquivo `micro-services.postman_collection.json` na pasta `PEDIDO`
+
 ## End-point: cadastrar-produto
 #### End-point para fazer o cadastro de um produto
 ### Method: POST

@@ -1,0 +1,788 @@
+{
+	"info": {
+		"_postman_id": "e8ab0bc9-ef06-4eaa-bfa5-496fb8a06c84",
+		"name": "micro-services",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11413172",
+		"_collection_link": "https://warped-escape-624714.postman.co/workspace/post-tech~2931a1e9-f92e-468c-98e8-1b5d76e5d02d/collection/11413172-e8ab0bc9-ef06-4eaa-bfa5-496fb8a06c84?action=share&source=collection_link&creator=11413172"
+	},
+	"item": [
+		{
+			"name": "PEDIDO",
+			"item": [
+				{
+					"name": "produto",
+					"item": [
+						{
+							"name": "cadastrar-produto",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"Whooper\",\r\n    \"categoria\": \"Lanche Muito bom\",\r\n    \"preco\": 10,\r\n    \"descricao\": \"Lanche para a maioria\",\r\n    \"imagens\": []\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{aws_url}}/produto/cadastrar",
+									"host": [
+										"{{aws_url}}"
+									],
+									"path": [
+										"produto",
+										"cadastrar"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listar-produto",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{aws_url}}/produto/listar",
+									"host": [
+										"{{aws_url}}"
+									],
+									"path": [
+										"produto",
+										"listar"
+									],
+									"query": [
+										{
+											"key": "categoria",
+											"value": "Lanche 4",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "editar-produto",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"6627f490f1a2eb2a7bb180a8\",\r\n    \"campo\": \"nome\",\r\n    \"valor\": \"mudou\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url_local}}/produto/editar",
+									"host": [
+										"{{base_url_local}}"
+									],
+									"path": [
+										"produto",
+										"editar"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletar-produto",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url_local}}/produto/deletar/{{produto_id_to_delete}}",
+									"host": [
+										"{{base_url_local}}"
+									],
+									"path": [
+										"produto",
+										"deletar",
+										"{{produto_id_to_delete}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "pedido",
+					"item": [
+						{
+							"name": "cadastrar-pedido",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"produtosIds\": [\"66428981d89622195f7a44f6\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{aws_url}}/pedido/cadastrar",
+									"host": [
+										"{{aws_url}}"
+									],
+									"path": [
+										"pedido",
+										"cadastrar"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "editar-pedido",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"663f8cee5f8395e090f3d4de\",\r\n    \"status\": \"Recebido\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{aws_url}}/pedido/editar-status",
+									"host": [
+										"{{aws_url}}"
+									],
+									"path": [
+										"pedido",
+										"editar-status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "listar-pedido",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{aws_url}}/pedido/listar",
+									"host": [
+										"{{aws_url}}"
+									],
+									"path": [
+										"pedido",
+										"listar"
+									],
+									"query": [
+										{
+											"key": "ids",
+											"value": "662b9ec7a035906dae37f858",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "PAGAMENTO",
+			"item": [
+				{
+					"name": "criar-pagamento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pagamentos\": [\r\n        {\r\n            \"_id\": \"663e8cb4a0d6d26299bb0c48\",\r\n            \"status\": \"Recebido\",\r\n            \"produtosIds\": [\r\n                \"663bfb97a64f9e280b59ff28\"\r\n            ],\r\n            \"clienteId\": \"usuarioteste1@email.com.br\",\r\n            \"createdAt\": \"2024-05-08T22:30:17.607Z\",\r\n            \"updatedAt\": \"2024-05-08T22:51:17.875Z\",\r\n            \"__v\": 0\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3335/pagamento/criar-pagamentos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3335",
+							"path": [
+								"pagamento",
+								"criar-pagamentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar-pagamentos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{aws_url}}/pagamento/listar-pagamento",
+							"host": [
+								"{{aws_url}}"
+							],
+							"path": [
+								"pagamento",
+								"listar-pagamento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pagar-pagamento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pedidoId\": \"b778463b-5fa2-4afe-ad84-bb429edbd936\",\r\n    \"cartao\": \"5031433215406351\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{aws_url}}/pagamento/pagar",
+							"host": [
+								"{{aws_url}}"
+							],
+							"path": [
+								"pagamento",
+								"pagar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CLIENTE",
+			"item": [
+				{
+					"name": "cadastrar-usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpf\": \"248.031.690-47\",\r\n    \"nome\": \"usuarioteste4\",\r\n    \"email\": \"usuarioteste4@email.com.br\",\r\n    \"senha\": \"zD)c9FM89[7+\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{aws_url}}/cliente/cadastrar",
+							"host": [
+								"{{aws_url}}"
+							],
+							"path": [
+								"cliente",
+								"cadastrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "autenticar-usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpf\": \"24803169047\",\r\n    \"senha\": \"zD)c9FM89[7+\",\r\n    \"autenticar\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{aws_url}}/cliente/autenticar",
+							"host": [
+								"{{aws_url}}"
+							],
+							"path": [
+								"cliente",
+								"autenticar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "retornar-usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"acessToken\": \"eyJraWQiOiI4TGQ5b0QyOGJVbVIrdlY3TXlJZCswOEFIVm82SjJYY0VrM1p1eGF3eWFRPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI5YTVkMTc2YS1hOWMwLTQxOTUtYjJiYy1lMDhhYjFjZjcwNmYiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV96RnZSbmJKNFUiLCJjbGllbnRfaWQiOiIyNzhmbWltZnA3cGw0OGhzNTJqbmN0aWhsZyIsIm9yaWdpbl9qdGkiOiJhYjk3YzU4Mi0zZWU1LTQ1ZDUtODQ5NS0yMzZjZTg5Mjc3NzAiLCJldmVudF9pZCI6ImI5MGQ2YmNkLTk4NzQtNDBjNy04Mjc0LWQ0OTFjYzBiN2E1YSIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE3MTU2MzU2MzcsImV4cCI6MTcxNTYzOTIzNywiaWF0IjoxNzE1NjM1NjM3LCJqdGkiOiIzOTg4MjdlNC03OWRmLTRlN2MtODI4Mi0wMmFjODczZmNiODciLCJ1c2VybmFtZSI6InVzdWFyaW90ZXN0ZTQifQ.n6ZCU2MjRNwqFh_pr8BMeZNwCEKS8vkbVg6aGK5N9CE4hAVl9PQHdM16y78sYhUefWP7pXnQcek1w_sVHi4GEoIlq70HnE0umuGGJnS6zTOmmLxSX3NqCpKlS_0exoiDNzNFvIxV6v1eOAwCXVvQMFTUosEuDgxKxKgpOSvRbRP-f9ZOn7R8J9In1we8kv-9tr61PeW9ZPRakOj4IvOdZC-EaEy7uS8IE6SdXrcGaXk-LmSPUoLMmul99I1iCpZKUj4OEMfJe1rV_mFYkGXb_SkBvnPwB7uwXuI5CYSyLEb-XZOotD1gBTVz9_shc3WM02xkXLu6Wp_tz70pKo6LbQ\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{aws_url}}/cliente/decodificar-acessToken",
+							"host": [
+								"{{aws_url}}"
+							],
+							"path": [
+								"cliente",
+								"decodificar-acessToken"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PRODUCAO",
+			"item": [
+				{
+					"name": "listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_local}}/producao/listar",
+							"host": [
+								"{{base_url_local}}"
+							],
+							"path": [
+								"producao",
+								"listar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "criar-pedido-producao",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"663f8cee5f8395e090f3d4da\",\r\n    \"status\": \"Recebido\",\r\n    \"clienteId\": \"usuarioteste4@email.com.br\",\r\n    \"produtos\": [\r\n        {\r\n            \"_id\": \"663f7f03e8f9dac785e80158\",\r\n            \"nome\": \"Whooper\",\r\n            \"categoria\": \"Lanche Muito bom\",\r\n            \"preco\": 10,\r\n            \"descricao\": \"Lanche para a maioria\",\r\n            \"imagens\": [],\r\n            \"createdAt\": \"2024-05-11T14:21:55.701Z\",\r\n            \"updatedAt\": \"2024-05-11T14:21:55.701Z\",\r\n            \"__v\": 0\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_local}}/producao/cadastrar",
+							"host": [
+								"{{base_url_local}}"
+							],
+							"path": [
+								"producao",
+								"cadastrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editar-status-pedido-producao",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"663fc31d8da9cd70e36aa1e3\",\r\n    \"status\": \"Listado\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_local}}/producao/editar-status",
+							"host": [
+								"{{base_url_local}}"
+							],
+							"path": [
+								"producao",
+								"editar-status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PASSO-A-PASSO",
+			"item": [
+				{
+					"name": "1-cadastrar-usuario",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpf\": \"618.322.150-32\",\r\n    \"nome\": \"usuarioteste2\",\r\n    \"email\": \"usuarioteste2@email.com.br\",\r\n    \"senha\": \"zD)c9FM89[7+\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{aws_url}}/cliente/cadastrar",
+							"host": [
+								"{{aws_url}}"
+							],
+							"path": [
+								"cliente",
+								"cadastrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2-cadastrar-produto",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Whooper\",\r\n    \"categoria\": \"Lanche Muito bom\",\r\n    \"preco\": 10,\r\n    \"descricao\": \"Lanche para a maioria\",\r\n    \"imagens\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{aws_url}}/produto/cadastrar",
+							"host": [
+								"{{aws_url}}"
+							],
+							"path": [
+								"produto",
+								"cadastrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3-listar-produto",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{aws_url}}/produto/listar",
+							"host": [
+								"{{aws_url}}"
+							],
+							"path": [
+								"produto",
+								"listar"
+							],
+							"query": [
+								{
+									"key": "categoria",
+									"value": "Lanche 4",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4-cadastrar-pedido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"produtosIds\": [\"6647c3063a7256445601c443\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{aws_url}}/pedido/cadastrar",
+							"host": [
+								"{{aws_url}}"
+							],
+							"path": [
+								"pedido",
+								"cadastrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5-listar-pedido",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{aws_url}}/pedido/listar",
+							"host": [
+								"{{aws_url}}"
+							],
+							"path": [
+								"pedido",
+								"listar"
+							],
+							"query": [
+								{
+									"key": "ids",
+									"value": "662b9ec7a035906dae37f858",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6-listar-pagamentos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{aws_url}}/pagamento/listar-pagamento",
+							"host": [
+								"{{aws_url}}"
+							],
+							"path": [
+								"pagamento",
+								"listar-pagamento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7-pagar-pagamento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pedidoId\": \"a809be17-c2b9-40fe-8c88-1a8293b37cfb\",\r\n    \"cartao\": \"5031433215406351\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{aws_url}}/pagamento/pagar",
+							"host": [
+								"{{aws_url}}"
+							],
+							"path": [
+								"pagamento",
+								"pagar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8-listar -producao",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{aws_url}}/producao/listar",
+							"host": [
+								"{{aws_url}}"
+							],
+							"path": [
+								"producao",
+								"listar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9-editar-status-pedido-producao",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"6647c47b3a7256445601c44b\",\r\n    \"status\": \"Pronto\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{aws_url}}/producao/editar-status",
+							"host": [
+								"{{aws_url}}"
+							],
+							"path": [
+								"producao",
+								"editar-status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
