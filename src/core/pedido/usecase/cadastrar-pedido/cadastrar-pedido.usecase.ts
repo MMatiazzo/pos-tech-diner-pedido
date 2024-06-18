@@ -5,6 +5,8 @@ import { IPedidoGateway } from "../../../../application/operation/gateways/pedid
 import { CardinalDirections, Pedido } from "../../entity/pedido.entity";
 import { IQueueGateway } from "../../../../application/operation/gateways/queue/Iqueue.gateway";
 import { env } from "process";
+import { Connection } from "mongoose";
+import { InjectConnection } from "@nestjs/mongoose";
 
 @Injectable()
 export class CadastrarPedidoUseCase {
@@ -14,7 +16,9 @@ export class CadastrarPedidoUseCase {
     @Inject(IPedidoGateway)
     private pedidoGateway: IPedidoGateway,
     @Inject(IQueueGateway)
-    private queueGateway: IQueueGateway
+    private queueGateway: IQueueGateway,
+    @InjectConnection()
+    private readonly connection: Connection,
   ) { }
 
   async execute({ produtosIds }: CriaPedidoDto, authorization: string): Promise<void> {
@@ -30,6 +34,7 @@ export class CadastrarPedidoUseCase {
 
     const [, token] = authorization.split(' ');
 
+    // substituir isso aqui por um gateway
     const clienteResponse = await fetch(`${env.URL_CLIENTE_MS}/decodificar-acessToken`,
       {
         method: "post",
@@ -41,22 +46,34 @@ export class CadastrarPedidoUseCase {
     const clienteResponseJson = await clienteResponse.json();
 
     console.log('cliente response => ', clienteResponseJson);
+    // ate aqui
 
     if (!clienteResponseJson?.nome)
       throw new BadRequestException('Cliente não encontrado');
 
-    const pedido = Pedido.new({ produtosIds, status: CardinalDirections.AGUARDANDO_PAGAMENTO });
+    const session = await this.connection.startSession();
 
-    const pedidoCadastrado = await this.pedidoGateway.cadastrarPedido({
-      ...pedido,
-      clienteId: clienteResponseJson.email
-    });
+    try {
+      session.startTransaction();
+      const pedido = Pedido.new({ produtosIds, status: CardinalDirections.AGUARDANDO_PAGAMENTO });
 
-    console.log('pedidoCadastrado => ', pedidoCadastrado);
+      const pedidoCadastrado = await this.pedidoGateway.cadastrarPedido({
+        ...pedido,
+        clienteId: clienteResponseJson.email
+      }, session);
 
-    await this.queueGateway.enviarMensagem(
-      process.env.SQS_CRIAR_PAGAMENTO_QUEUE,
-      pedidoCadastrado
-    );
+      console.log('pedidoCadastrado => ', pedidoCadastrado);
+
+      await this.queueGateway.enviarMensagem(
+        process.env.SQS_CRIAR_PAGAMENTO_QUEUE,
+        pedidoCadastrado
+      );
+      await session.commitTransaction();
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      session.endSession();
+    }
   }
 }

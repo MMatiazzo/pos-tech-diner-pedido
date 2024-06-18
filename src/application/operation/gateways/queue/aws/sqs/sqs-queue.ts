@@ -28,6 +28,7 @@ export class SQSQueue implements IQueueGateway {
       console.info(`response => ${response}`);
     } catch (err) {
       console.error(`error on sqs-queue => ${err}`);
+      throw err;
     }
   }
 

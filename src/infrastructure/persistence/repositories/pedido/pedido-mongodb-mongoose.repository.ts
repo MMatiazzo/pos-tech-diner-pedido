@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { ClientSession, Model } from "mongoose";
 import { Pedido } from "src/core/pedido/entity/pedido.entity";
 import { PedidoDocument } from "../../mongoose/schemas/pedido/pedido.schema";
 import { IPedidoRepository } from "./Ipedido.repository";
@@ -12,8 +12,8 @@ export class PedidoMongodbMongooseRepository implements IPedidoRepository {
     private pedidoModel: Model<PedidoDocument>
   ) { }
 
-  async cadastrar(pedido: Pedido): Promise<any> {
-    return this.pedidoModel.create(pedido);
+  async cadastrar(pedido: Pedido, session: ClientSession): Promise<any> {
+    return this.pedidoModel.create([pedido], { session });
   }
 
   async listar(matchArray: any[]): Promise<any> {

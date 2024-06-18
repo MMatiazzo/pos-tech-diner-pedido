@@ -3,6 +3,7 @@ import { Pedido } from "../../../../core/pedido/entity/pedido.entity";
 import { IPedidoRepository } from "../../../../infrastructure/persistence/repositories/pedido/Ipedido.repository";
 import { IPedidoGateway } from "./Ipedido.gateway";
 import { ListarPedidoDto } from "../../../../core/pedido/dto/listar-pedido.dto";
+import { ClientSession } from "mongoose";
 
 export class PedidoGateway implements IPedidoGateway {
   constructor(
@@ -10,8 +11,8 @@ export class PedidoGateway implements IPedidoGateway {
     private pedidoRepository: IPedidoRepository
   ) { }
 
-  async cadastrarPedido(pedido: Pedido): Promise<any> {
-    return this.pedidoRepository.cadastrar(pedido);
+  async cadastrarPedido(pedido: Pedido, session: ClientSession): Promise<any> {
+    return this.pedidoRepository.cadastrar(pedido, session);
   }
 
   async listarPedido({ ids }: ListarPedidoDto) {
