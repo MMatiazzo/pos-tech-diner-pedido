@@ -25,9 +25,9 @@ export class PedidoMongodbMongooseRepository implements IPedidoRepository {
     ]);
   }
 
-  async editar(id: string, field: string, value: string): Promise<Pedido> {
+  async editar(id: string, field: string, value: string, session: ClientSession): Promise<Pedido> {
     return this.pedidoModel.findByIdAndUpdate(id, {
       [field]: value
-    }, { new: true },);
+    }, { new: true, session });
   }
 }

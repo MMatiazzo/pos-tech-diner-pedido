@@ -59,7 +59,12 @@ const useCaseProviders: Provider[] = [
       pedidoGateway: IPedidoGateway,
       queueGateway: IQueueGateway,
       connection: Connection
-    ) => new CadastrarPedidoUseCase(produtoGateway, pedidoGateway, queueGateway, connection),
+    ) => new CadastrarPedidoUseCase(
+      produtoGateway,
+      pedidoGateway,
+      queueGateway,
+      connection
+    ),
     inject: [IProdutoGateway, IPedidoGateway, IQueueGateway, 'DatabaseConnection']
   },
   {
@@ -75,8 +80,14 @@ const useCaseProviders: Provider[] = [
       pedidoGateway: IPedidoGateway,
       produtoGateway: IProdutoGateway,
       queueGateway: IQueueGateway,
-    ) => new EditarPedidoStatusUseCase(pedidoGateway, produtoGateway, queueGateway),
-    inject: [IPedidoGateway, IProdutoGateway, IQueueGateway]
+      connection: Connection
+    ) => new EditarPedidoStatusUseCase(
+      pedidoGateway,
+      produtoGateway,
+      queueGateway,
+      connection
+    ),
+    inject: [IPedidoGateway, IProdutoGateway, IQueueGateway, 'DatabaseConnection']
   }
 ]
 

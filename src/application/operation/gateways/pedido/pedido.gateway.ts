@@ -32,8 +32,8 @@ export class PedidoGateway implements IPedidoGateway {
     return this.pedidoRepository.listar(arrayMatch);
   }
 
-  async editarStatusPedido(id: string, status: string): Promise<Pedido> {
-    const pedidoModificado = await this.pedidoRepository.editar(id, 'status', status);
+  async editarStatusPedido(id: string, status: string, session: ClientSession): Promise<Pedido> {
+    const pedidoModificado = await this.pedidoRepository.editar(id, 'status', status, session);
     return pedidoModificado;
   }
 }
