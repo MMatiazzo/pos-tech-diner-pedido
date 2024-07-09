@@ -4,7 +4,7 @@ import { IProdutoRepository } from "src/infrastructure/persistence/repositories/
 import { ProdutoGateway } from "../operation/gateways/produto/produto.gateway";
 
 import { MongooseModule, getModelToken } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { Connection, Model } from "mongoose";
 import { CadastrarPedidoUseCase } from "src/core/pedido/usecase/cadastrar-pedido/cadastrar-pedido.usecase";
 import { EditarPedidoStatusUseCase } from "src/core/pedido/usecase/editar-status-pedido/editar-pedido-status.usecase";
 import { ListarPedidoUseCase } from "src/core/pedido/usecase/listar-pedido/listar-pedido.usecase";
@@ -58,8 +58,14 @@ const useCaseProviders: Provider[] = [
       produtoGateway: IProdutoGateway,
       pedidoGateway: IPedidoGateway,
       queueGateway: IQueueGateway,
-    ) => new CadastrarPedidoUseCase(produtoGateway, pedidoGateway, queueGateway),
-    inject: [IProdutoGateway, IPedidoGateway, IQueueGateway]
+      connection: Connection
+    ) => new CadastrarPedidoUseCase(
+      produtoGateway,
+      pedidoGateway,
+      queueGateway,
+      connection
+    ),
+    inject: [IProdutoGateway, IPedidoGateway, IQueueGateway, 'DatabaseConnection']
   },
   {
     provide: ListarPedidoUseCase,
@@ -74,8 +80,14 @@ const useCaseProviders: Provider[] = [
       pedidoGateway: IPedidoGateway,
       produtoGateway: IProdutoGateway,
       queueGateway: IQueueGateway,
-    ) => new EditarPedidoStatusUseCase(pedidoGateway, produtoGateway, queueGateway),
-    inject: [IPedidoGateway, IProdutoGateway, IQueueGateway]
+      connection: Connection
+    ) => new EditarPedidoStatusUseCase(
+      pedidoGateway,
+      produtoGateway,
+      queueGateway,
+      connection
+    ),
+    inject: [IPedidoGateway, IProdutoGateway, IQueueGateway, 'DatabaseConnection']
   }
 ]
 
