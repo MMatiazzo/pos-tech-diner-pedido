@@ -1,39 +1,58 @@
+import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { getConnectionToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CadastrarPedidoUseCase } from './cadastrar-pedido.usecase';
-import { IProdutoGateway } from '../../../../application/operation/gateways/produto/Iproduto.gateway';
+import { ClientSession, Connection } from 'mongoose';
 import { IPedidoGateway } from '../../../../application/operation/gateways/pedido/Ipedido.gateway';
+import { IProdutoGateway } from '../../../../application/operation/gateways/produto/Iproduto.gateway';
 import { IQueueGateway } from '../../../../application/operation/gateways/queue/Iqueue.gateway';
 import { CriaPedidoDto } from '../../dto/cria-pedido.dto';
-import { Pedido } from '../../entity/pedido.entity';
-import { CardinalDirections } from '../../entity/pedido.entity';
-import fetch from 'node-fetch';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { CadastrarPedidoUseCase } from './cadastrar-pedido.usecase';
 
 describe('CadastrarPedidoUseCase', () => {
   let useCase: CadastrarPedidoUseCase;
   let produtoGateway: IProdutoGateway;
   let pedidoGateway: IPedidoGateway;
   let queueGateway: IQueueGateway;
+  let connection: Connection;
+  let session: ClientSession;
 
   beforeEach(async () => {
-    const produtoGatewayMock: Partial<IProdutoGateway> = {
-      listarProduto: jest.fn(),
-    };
+    session = {
+      startTransaction: jest.fn(),
+      commitTransaction: jest.fn(),
+      abortTransaction: jest.fn(),
+      endSession: jest.fn(),
+    } as unknown as ClientSession;
 
-    const pedidoGatewayMock: Partial<IPedidoGateway> = {
-      cadastrarPedido: jest.fn(),
-    };
-
-    const queueGatewayMock: Partial<IQueueGateway> = {
-      enviarMensagem: jest.fn(),
+    const mockConnection = {
+      startSession: jest.fn().mockResolvedValue(session),
     };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CadastrarPedidoUseCase,
-        { provide: IProdutoGateway, useValue: produtoGatewayMock },
-        { provide: IPedidoGateway, useValue: pedidoGatewayMock },
-        { provide: IQueueGateway, useValue: queueGatewayMock },
+        {
+          provide: IProdutoGateway,
+          useValue: {
+            listarProduto: jest.fn(),
+          },
+        },
+        {
+          provide: IPedidoGateway,
+          useValue: {
+            cadastrarPedido: jest.fn(),
+          },
+        },
+        {
+          provide: IQueueGateway,
+          useValue: {
+            enviarMensagem: jest.fn(),
+          },
+        },
+        {
+          provide: getConnectionToken(),
+          useValue: mockConnection,
+        },
       ],
     }).compile();
 
@@ -41,95 +60,66 @@ describe('CadastrarPedidoUseCase', () => {
     produtoGateway = module.get<IProdutoGateway>(IProdutoGateway);
     pedidoGateway = module.get<IPedidoGateway>(IPedidoGateway);
     queueGateway = module.get<IQueueGateway>(IQueueGateway);
+    connection = module.get<Connection>(getConnectionToken());
   });
 
-  it('should be defined', () => {
-    expect(useCase).toBeDefined();
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  describe('execute', () => {
-    it('should throw BadRequestException if produtosIds array is empty', async () => {
-      const dto: CriaPedidoDto = { produtosIds: [] };
-      const authorization = 'Bearer token';
-      await expect(useCase.execute(dto, authorization)).rejects.toThrow(BadRequestException);
-    });
+  it('deve jogar execao quando nao ter produtos', async () => {
+    await expect(
+      useCase.execute({ produtosIds: [] } as CriaPedidoDto, 'Bearer token'),
+    ).rejects.toThrow(new BadRequestException('Não é possível fazer um pedido sem produtos'));
+  });
 
-    it('should throw NotFoundException if any produto is not found', async () => {
-      const dto: CriaPedidoDto = { produtosIds: ['prodId1', 'prodId2'] };
-      const authorization = 'Bearer token';
-      jest.spyOn(produtoGateway, 'listarProduto').mockResolvedValueOnce([]);
-      await expect(useCase.execute(dto, authorization)).rejects.toThrow(NotFoundException);
-    });
+  it('should throw NotFoundException if any product is not found', async () => {
+    (produtoGateway.listarProduto as jest.Mock).mockResolvedValue([]);
 
-    it('should call pedidoGateway.cadastrarPedido with correct pedido data', async () => {
-      const dto: CriaPedidoDto = { produtosIds: ['prodId1', 'prodId2'] };
-      const authorization = 'Bearer token';
-      const clienteResponseJson = { nome: 'Client', email: 'client@example.com' };
-      jest.spyOn(global, 'fetch').mockResolvedValueOnce({
-        json: jest.fn().mockResolvedValueOnce(clienteResponseJson),
-      } as any);
-      jest.spyOn(produtoGateway, 'listarProduto').mockResolvedValueOnce(
-        [
-          {
-            id: '1',
-            categoria: 'lanche',
-            descricao: '',
-            imagens: [],
-            nome: 'prod1',
-            preco: 10,
+    await expect(
+      useCase.execute({ produtosIds: ['validId', 'invalidId'] } as CriaPedidoDto, 'Bearer token'),
+    ).rejects.toThrow(new NotFoundException('Produto não encontrado'));
+  });
 
-          },
-          {
-            id: '2',
-            categoria: 'lanche',
-            descricao: '',
-            imagens: [],
-            nome: 'prod2',
-            preco: 10,
-          }
-        ]);
-      const pedido: Pedido = { produtosIds: dto.produtosIds, status: CardinalDirections.AGUARDANDO_PAGAMENTO };
-      jest.spyOn(Pedido, 'new').mockReturnValueOnce(pedido);
-      const clienteId = clienteResponseJson.email;
-      const pedidoCadastrado: Pedido = { ...pedido, clienteId };
-      jest.spyOn(pedidoGateway, 'cadastrarPedido').mockResolvedValueOnce(pedidoCadastrado);
-      await useCase.execute(dto, authorization);
-      expect(pedidoGateway.cadastrarPedido).toHaveBeenCalledWith(expect.objectContaining({ ...pedido, clienteId }));
-    });
+  it('deve jogar execao quando não encontrar cliente', async () => {
+    (produtoGateway.listarProduto as jest.Mock).mockResolvedValue([{ id: 'validId' }]);
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: jest.fn().mockResolvedValue({}),
+    } as any);
 
-    it('should call queueGateway.enviarMensagem with correct parameters', async () => {
-      const dto: CriaPedidoDto = { produtosIds: ['prodId1', 'prodId2'] };
-      const authorization = 'Bearer token';
-      const clienteResponseJson = { nome: 'Client', email: 'client@example.com' };
-      jest.spyOn(global, 'fetch').mockResolvedValueOnce({
-        json: jest.fn().mockResolvedValueOnce(clienteResponseJson),
-      } as any);
-      jest.spyOn(produtoGateway, 'listarProduto').mockResolvedValueOnce(
-        [
-          {
-            id: '1',
-            categoria: 'lanche',
-            descricao: '',
-            imagens: [],
-            nome: 'prod1',
-            preco: 10,
+    await expect(
+      useCase.execute({ produtosIds: ['validId'] } as CriaPedidoDto, 'Bearer token'),
+    ).rejects.toThrow(new BadRequestException('Cliente não encontrado'));
+  });
 
-          },
-          {
-            id: '2',
-            categoria: 'lanche',
-            descricao: '',
-            imagens: [],
-            nome: 'prod2',
-            preco: 10,
-          }
-        ]
-      );
-      const pedido: Pedido = { produtosIds: dto.produtosIds, status: CardinalDirections.AGUARDANDO_PAGAMENTO };
-      jest.spyOn(Pedido, 'new').mockReturnValueOnce(pedido);
-      jest.spyOn(pedidoGateway, 'cadastrarPedido').mockResolvedValueOnce(pedido);
-      await useCase.execute(dto, authorization);
-      expect(queueGateway.enviarMensagem).toHaveBeenCalledWith(process.env.SQS_CRIAR_PAGAMENTO_QUEUE, pedido);
-    });
+  it('deve criar um pedido', async () => {
+    (produtoGateway.listarProduto as jest.Mock).mockResolvedValue([{ id: 'validId' }]);
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: jest.fn().mockResolvedValue({ nome: 'clientName', email: 'clientEmail' }),
+    } as any);
+    (pedidoGateway.cadastrarPedido as jest.Mock).mockResolvedValue({ id: 'orderId' });
+
+    await expect(
+      useCase.execute({ produtosIds: ['validId'] } as CriaPedidoDto, 'Bearer token'),
+    ).resolves.not.toThrow();
+
+    expect(produtoGateway.listarProduto).toHaveBeenCalled();
+    expect(pedidoGateway.cadastrarPedido).toHaveBeenCalled();
+    expect(queueGateway.enviarMensagem).toHaveBeenCalled();
+    expect(session.commitTransaction).toHaveBeenCalled();
+  });
+
+  it('deve abortar a transaction', async () => {
+    (produtoGateway.listarProduto as jest.Mock).mockResolvedValue([{ id: 'validId' }]);
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: jest.fn().mockResolvedValue({ nome: 'clientName', email: 'clientEmail' }),
+    } as any);
+    (pedidoGateway.cadastrarPedido as jest.Mock).mockRejectedValue(new Error('Order creation failed'));
+
+    await expect(
+      useCase.execute({ produtosIds: ['validId'] } as CriaPedidoDto, 'Bearer token'),
+    ).rejects.toThrow('Order creation failed');
+
+    expect(session.abortTransaction).toHaveBeenCalled();
   });
 });

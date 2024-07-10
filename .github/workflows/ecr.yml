@@ -14,33 +14,33 @@ permissions:
   contents: read
 
 jobs:
-  # sonarcloud:
-  #   name: SonarQube Analysis
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 0
+  sonarcloud:
+    name: SonarQube Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-  #     - run: npm ci
+      - run: npm ci
 
-  #     - name: Run jest tests
-  #       run: npm run test:cov
+      - name: Run jest tests
+        run: npm run test:cov
 
-  #     - name: Run cucumber tests
-  #       run: npm run test:cucumber
+      - name: Run cucumber tests
+        run: npm run test:cucumber
 
-  #     - name: SonarCloud Scan
-  #       uses: sonarsource/sonarcloud-github-action@master
-  #       with:
-  #         args: >
-  #           -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
-  #           -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
-  #           -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        with:
+          args: >
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
 
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   deploy-ecr:
     name: Push image

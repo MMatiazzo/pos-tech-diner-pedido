@@ -38,8 +38,8 @@ describe('PedidoGateway', () => {
         clienteId: '123'
       };
       jest.spyOn(repository, 'cadastrar').mockResolvedValueOnce();
-      const result = await gateway.cadastrarPedido(pedido);
-      expect(repository.cadastrar).toHaveBeenCalledWith(pedido);
+      const result = await gateway.cadastrarPedido(pedido, 'session' as any);
+      expect(repository.cadastrar).toHaveBeenCalledWith(pedido, 'session');
     });
   });
 
@@ -59,9 +59,9 @@ describe('PedidoGateway', () => {
       const status = 'processed';
       const pedidoModificado: Pedido = { id, status, clienteId: '123', produtosIds: [] };
       jest.spyOn(repository, 'editar').mockResolvedValueOnce(pedidoModificado);
-      const result = await gateway.editarStatusPedido(id, status);
+      const result = await gateway.editarStatusPedido(id, status, 'session' as any);
       expect(result).toEqual(pedidoModificado);
-      expect(repository.editar).toHaveBeenCalledWith(id, 'status', status);
+      expect(repository.editar).toHaveBeenCalledWith(id, 'status', status, 'session');
     });
   });
 });
