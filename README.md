@@ -72,6 +72,8 @@ Além disso, criamos um relatório de impacto à proteção de dados pessoais (R
 
 #### Principais
 - TypeScript: Superset da linguagem JavaScript que adiciona tipagem estática opcional.
+- Node.js: Ambiente de execução JavaScript server-side.
+- npm: Gerenciador de pacotes do Node.js.
 - NestJS: Framework para construção de aplicações server-side eficientes e escaláveis.
 - Mongoose: ODM para modelar os dados da aplicação.
 - MongoDB: Banco de dados NoSQL orientado a documentos.
