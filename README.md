@@ -63,7 +63,7 @@ Todas as vulnerabilidades foram corrigidas, sendo a maioria delas corrigidas com
 
 ### Stack utilizada:
 
-#### Core
+#### Principais
 - TypeScript: Superset da linguagem JavaScript que adiciona tipagem estática opcional.
 - NestJS: Framework para construção de aplicações server-side eficientes e escaláveis.
 - Mongoose: ODM para modelar os dados da aplicação.
@@ -77,7 +77,7 @@ Todas as vulnerabilidades foram corrigidas, sendo a maioria delas corrigidas com
 - Cucumber: Ferramenta para executar testes de aceitação.
 - NestJS Testing: Biblioteca para testar aplicações NestJS.
 
-#### Code Quality
+#### Qualidade de Código
 - ESLint: Ferramenta para identificar e reportar padrões encontrados no código ECMAScript/JavaScript.
 - Prettier: Ferramenta para formatar o código.
 - SonarQube: Ferramenta para análise contínua da qualidade do código.
