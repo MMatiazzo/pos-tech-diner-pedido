@@ -7,6 +7,7 @@ Projeto desenvolvido para entrega do *Tech Challenge* da **Pós Tech - Software 
 - [ ] Ajustar link/imagem do vídeo de apresentação
 - [ ] Criar diagramas do funcionamento do projeto (SAGA + Arquitetura)
 - [ ] Adicionar anexos do relatório de segurança (OWASP Zap)
+- [ ] Adicionar anexos do relatório de impacto à proteção de dados pessoais (RIPD)
 
 
 ## Grupo 11 - SOAT 4
@@ -60,6 +61,12 @@ Validamos os microsserviços com auxílio da ferramente OWASP Zap, que identific
 
 #### Ações Tomadas
 Todas as vulnerabilidades foram corrigidas, sendo a maioria delas corrigidas com a utilização de bibliotecas de validação e tratamento de exceções.
+
+## LGPD
+Seguimos as diretrizes da LGPD (Lei Geral de Proteção de Dados) para garantir a privacidade e segurança dos dados dos usuários. As adaptações para permitir a exclusão de dados pessoais foram feitas em todos os microsserviços pertinentes.
+Além disso, criamos um relatório de impacto à proteção de dados pessoais (RIPD) para documentar as medidas de segurança adotadas.
+
+[Documento RIPD]()
 
 ### Stack utilizada:
 
