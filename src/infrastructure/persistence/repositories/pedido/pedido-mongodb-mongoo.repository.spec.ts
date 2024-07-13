@@ -40,8 +40,8 @@ describe('PedidoMongodbMongooseRepository', () => {
         produtosIds: [],
         status: 'Aguardando_pagamento',
       }; // Add your pedido data here
-      await repository.cadastrar(pedidoData);
-      expect(model.create).toHaveBeenCalledWith(pedidoData);
+      await repository.cadastrar(pedidoData, 'session' as any);
+      expect(model.create).toHaveBeenCalledWith([pedidoData], { session: 'session' });
     });
   });
 
@@ -58,8 +58,8 @@ describe('PedidoMongodbMongooseRepository', () => {
       const id = '123';
       const field = 'status';
       const value = 'Recebido';
-      await repository.editar(id, field, value);
-      expect(model.findByIdAndUpdate).toHaveBeenCalledWith(id, { [field]: value }, { new: true });
+      await repository.editar(id, field, value, 'session' as any);
+      expect(model.findByIdAndUpdate).toHaveBeenCalledWith(id, { [field]: value }, { new: true, session: 'session' });
     });
   });
 });
