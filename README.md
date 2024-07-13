@@ -2,12 +2,6 @@
 
 Projeto desenvolvido para entrega do *Tech Challenge* da **Pós Tech - Software Architecture** (Fase 5).
 
-# To-do Readme
-- [ ] Ajustar link do projeto de infraestrutura
-- [ ] Ajustar link/imagem do vídeo de apresentação
-- [ ] Adicionar anexos do relatório de impacto à proteção de dados pessoais (RIPD)
-
-
 ## Grupo 11 - SOAT 4
 - Alexandre Mikio Kimura Fukano - **RM 351127** (alexandremkimura@hotmail.com)
 - Lucas Proença Renó - **RM 351351** (lucasreno9@gmail.com)
@@ -22,11 +16,10 @@ O projeto foi desenvolvido para ajudar uma lanchonete de bairro em expansão que
 - [Pagamento](https://github.com/MMatiazzo/pos-tech-diner-pagamento): Responsável por gerenciar os pagamentos dos pedidos;
 
 ## Infraestrutura
-Além dos microsserviços, existe um [projeto de infraestrutura](https://github.com/MMatiazzo/) que visa criar uma infraestrutura para os microsserviços da aplicação utilizando Amazon Web Services. O projeto foi desenvolvido utilizando Terraform e Github Actions.
+Além dos microsserviços, existe um [projeto de infraestrutura](https://github.com/MMatiazzo/infra-pos-tech-diner) que visa criar uma infraestrutura para os microsserviços da aplicação utilizando Amazon Web Services. O projeto foi desenvolvido utilizando Terraform e Github Actions.
 
 ## Vídeo de Apresentação - Fase 5
-[![Vídeo de Apresentação](https://img.youtube.com/vi/1Q6Q1Q1Q1Q1Q/0.jpg)](https://www.youtube.com/watch?v=1Q6Q1Q1Q1Q1Q)
-
+[![logo-youtube](https://github.com/user-attachments/assets/4ef4ce8c-af75-4bb3-9461-6322dab45e7d)](https://www.youtube.com/watch?v=87CyZxSenM4)
 
 ## Objetivo
 
@@ -46,7 +39,8 @@ Escolhemos utilizar o padrão **SAGA Coreografado** para garantir a consistênci
 #### API Gateway
 ![api-gateway drawio](https://github.com/user-attachments/assets/222bed1f-9e8a-497f-b96b-a72ef9430dcc)
 #### Coreografia microsserviços
-![microserviços drawio](https://github.com/user-attachments/assets/1bba78d2-eed0-4ebf-817f-c85ae3e75548)
+![arquitetura_pos-tech-diner drawio](https://github.com/user-attachments/assets/d619a1c6-95cb-42eb-8a45-6a2f3d08cf40)
+
 
 ## Segurança
 
@@ -75,7 +69,7 @@ Todas as vulnerabilidades foram corrigidas, sendo a maioria delas corrigidas com
 Seguimos as diretrizes da LGPD (Lei Geral de Proteção de Dados) para garantir a privacidade e segurança dos dados dos usuários. As adaptações para permitir a exclusão de dados pessoais foram feitas em todos os microsserviços pertinentes.
 Além disso, criamos um relatório de impacto à proteção de dados pessoais (RIPD) para documentar as medidas de segurança adotadas.
 
-[Documento RIPD]()
+[Documento RIPD.pdf](https://github.com/user-attachments/files/16203281/pos_tech_diner_ripd_att.pdf)
 
 ### Stack utilizada:
 
