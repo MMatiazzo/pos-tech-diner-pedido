@@ -119,19 +119,9 @@ git clone https://github.com/MMatiazzo/pos-tech-diner-pedido
 cd pos-tech-diner-pedido
 ```
 
-### 2. Instale as dependências
+### 2. Execute o docker-compose
 ```bash
-npm install
-```
-
-### 3. Substitua a variável DATABASE_URL
-```bash
-Substitua a váriavel DATABASE_URL com a connection string mongodb
-```
-
-### 4. Execute o projeto
-```bash
-npm run start:dev
+docker-compose up --build
 ```
 <br>
 
