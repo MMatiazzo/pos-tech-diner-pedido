@@ -143,4 +143,4 @@ npm run start:dev
 
 # Postman
 
-Deixamos uma collection com os requests no arquivo `micro-services.postman_collection.json` na raiz do projeto.
+Deixamos uma collection com os requests no arquivo `PEDIDO.postman_collection.json` na raiz do projeto.
