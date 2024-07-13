@@ -5,8 +5,6 @@ Projeto desenvolvido para entrega do *Tech Challenge* da **Pós Tech - Software 
 # To-do Readme
 - [ ] Ajustar link do projeto de infraestrutura
 - [ ] Ajustar link/imagem do vídeo de apresentação
-- [ ] Criar diagramas do funcionamento do projeto (SAGA + Arquitetura)
-- [ ] Adicionar anexos do relatório de segurança (OWASP Zap)
 - [ ] Adicionar anexos do relatório de impacto à proteção de dados pessoais (RIPD)
 
 
@@ -45,8 +43,10 @@ O padrão SAGA é um padrão de design de software que permite manter a consist�
 Escolhemos utilizar o padrão **SAGA Coreografado** para garantir a consistência dos dados entre os microsserviços. A sua escolha se deu por ser um padrão mais simples, além de ser mais adequado para sistemas com poucos microsserviços e poucas etapas. Uma vez que cada microsserviço é responsável apenas por publicar e consumir eventos, não havendo necessidade de um microsserviço orquestrador para controlar o fluxo.
 
 ### Diagramas
-![infra](https://github.com/lucasreno/FoodieFlowInfra/assets/62509668/7c38cada-664a-4c45-a5c0-d3b0f7cdce47)
-
+#### API Gateway
+![api-gateway drawio](https://github.com/user-attachments/assets/222bed1f-9e8a-497f-b96b-a72ef9430dcc)
+#### Coreografia microsserviços
+![microserviços drawio](https://github.com/user-attachments/assets/1bba78d2-eed0-4ebf-817f-c85ae3e75548)
 
 ## Segurança
 
@@ -58,6 +58,15 @@ Validamos os microsserviços com auxílio da ferramente OWASP Zap, que identific
 - Divulgação de Informações - Mensagens de Erro de Depuração (1 instância)
 - Vazamento de Informações - Cabeçalhos de Resposta HTTP (4 instâncias)
 - X-Content-Type-Options Header Missing (3 instância)
+
+[OWASP-ZAP-report-pos-tech-diner.zip](https://github.com/user-attachments/files/16200767/OWASP-ZAP-report-pos-tech-diner.zip)
+<table>
+  <tr>
+    <td valign="top">Antes<br><img src="https://github.com/user-attachments/assets/55e22257-b779-44e7-adbc-0105b07486d9"/></td>
+    <td valign="top">Depois<br><img src="https://github.com/user-attachments/assets/64852f20-9bc6-41cd-b223-1d82545e30fa"/></td>
+  </tr>
+</table>
+
 
 #### Ações Tomadas
 Todas as vulnerabilidades foram corrigidas, sendo a maioria delas corrigidas com a utilização de bibliotecas de validação e tratamento de exceções.
