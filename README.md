@@ -119,7 +119,13 @@ git clone https://github.com/MMatiazzo/pos-tech-diner-pedido
 cd pos-tech-diner-pedido
 ```
 
-### 2. Execute o docker-compose
+### 2. no arquivo docker-compose.yaml
+```bash
+Preencher as váriaveis de ambiente. Obs: A váriavel DATABASE_URL deve ser preenchida com um mongodb com replicaset.
+```
+<br>
+
+### 3. Execute o docker-compose
 ```bash
 docker-compose up --build
 ```
