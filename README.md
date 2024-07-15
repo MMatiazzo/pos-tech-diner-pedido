@@ -121,7 +121,7 @@ cd pos-tech-diner-pedido
 
 ### 2. no arquivo docker-compose.yaml
 ```bash
-Preencher as váriaveis de ambiente. Obs: A váriavel DATABASE_URL deve ser preenchida com um mongodb com replicaset.
+Preencher as variáveis de ambiente. Obs: A variável DATABASE_URL deve ser preenchida com uma connection string mongodb com replicaset.
 ```
 <br>
 
